@@ -16,12 +16,8 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ### Komponens diagram
 
-(A kép generálása dinamikus a lucidchart.com oldalról)
-
-![Komponens diagram](https://app.lucidchart.com/documents/embeddedchart/11389a2d-8f28-43ec-ae7d-27ea4b2c9f8b)
+![Komponens diagram](/pictures/ArchitectureDiagram.svg)
 
 ### Adatbázis séma
 
-(A kép generálása dinamikus a dbdiagram.io oldalról)
-
-![Adatbázis séma terve](https://dbdiagram.io/embed/5f5a38a088d052352cb6b538)
+![Adatbázis séma terve](/pictures/AppSchema.png)
