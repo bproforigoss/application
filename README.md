@@ -16,7 +16,7 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ### Komponens diagram
 
-![Komponens diagram](/pictures/ArchitectureDiagram.svg)
+![Komponens diagram](/pictures/ArchitectureDiagram.png)
 
 ### Adatbázis séma
 
