@@ -52,6 +52,8 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 A felhasználó kiválasztja a megrendelendő termékeket és a mennyiséget megadva, a személyes adatait hozzáfűzve leadja a rendelését. Ekkor a Web UI átadja a rendelést az Order Manager-nek. Az Order Manager eltárolja a rendelés adatait értesíti az Event Store-t, hogy egy rendelés leadásra került. Az Event Store létrehoz egy eseményt, amiben megadja az esemény adatait és a státuszát "PENDING"-re állítja. Ekkor értesíti az Inventory-t a rendelés esemény létrejöttéről. Az Inventory az esemény hatására ellenőrzi az általa nyílvántartott termékeket, és ha elegendő van raktáron, levonja a mennyiséget az általa tárolt mennyiségből. Ekkor az Inventory értesíti az Event Store-t, hogy a rendelés mennyisége levonásra került, így az Event Store a rendelés státuszát "ORDERED" állapotra váltja. Ezután értesíti a Web UI-t, hogy a rendelés "ORDERED" állapotba került, ami megjeleníti az információt a felhasználónak.
 
+![Use case 1 MSC](/pictures/useCases/OrderSubmittedAndProcessedMSC.png)
+
 **Alternatív lefutások**
 
 #### Alternatív 1
@@ -60,11 +62,15 @@ _Az Inventory-ban nincsen annyi termék, mint amennyit rendeltek_
 
 Az Inventory a rendelés létrehozva esemény hatására ellenőrzi az általa tárolt mennyiséget, de az kevesebb, mint a megrendelt elem mennyisége. Az Event Store-t értesíti arról, hogy a rendelést nem tudta levonni a raktári mennyiségből. Az Event Store erre a rendelés állapotát "REJECTED_NOT_ENOUGH_STOCK" állapotra állítja és értesíti a Web UI-t és az Order Manager-t. A Web UI erre megjeleníti a felhasználónak a rendelés sikertelenségét és az okot. Az Order Manager törli a megrendelés adatait.
 
+![Use case 1 alt MSC](/pictures/useCases/OrderSubmittedAndRejectedMSC.png)
+
 ### Use case 2
 
 **Felhasználó töröl egy már leadott rendelést**
 
 A felhasználó törölni szeretné az általa leadott rendelést. A Web UI értesíti az Event Store-t erről. Az Event Store ellenőrzi a rendelés állapotát. A rendelés "ORDERED" státutszban van, ezért a megrendelt elemek adataival értesíti az Inventory-t, hogy az adott mennyiségek megrendelése törlésre került. Az Inventory visszatölti a termékek raktári mennyiségét és értesíti az Event Store-t arról, hogy visszaállította az eredeti állapotot. Az Event Store a rendelés státuszát "ITEMS_RECLAIMED" állapotba állítja. Ezután értesíti az Order Manager komponenst, hogy törölje a megrendelés adatait. Az Order Manager törli a rendelést és értesíti az Event Store-t. Erre az Event Store "REVOKED" státuszba helyezi a rendelést. Erről értesíti a Web UI-t, ami megjeleníti a művelet eredményét.
+
+![Use case 2 MSC](/pictures/useCases/OrderedDeletedWhileAcceptedMSC.png)
 
 **Alternatív lefutások**
 
@@ -73,6 +79,8 @@ A felhasználó törölni szeretné az általa leadott rendelést. A Web UI ért
 _A rendelés állapota "PENDING"_
 
 A rendelés "PENDING" státuszban van. Az Event Store értesíti a Web UI-t a törlés sikertelenségéről és okáról. A Web UI megjeleníti az eredményt és az okot, felkéri a felhasználót a visszajelzés megvárására.
+
+![Use case 2 alt MSC](/pictures/useCases/OrderedDeletedWhilePendingMSC.png)
 
 ### Use case 3
 
