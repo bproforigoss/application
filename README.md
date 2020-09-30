@@ -45,8 +45,6 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 A felhasználó kiválasztja a megrendelendő termékeket és a mennyiséget megadva leadja a rendelését. Az Order Manager ellenőrzi a rendelés helyességét, elküld egy rendelés hozzáadva eseményt. Az értesítést megkapja az Inventory. Az ellenőrzi az általa nyílvántartott termékeket, és ha elegendő van raktáron, elküld egy elemmennyiség csökkentve eseményt. Az Order Manager - amennyiben minden termék el lett fogadva - elküld egy rendelés elfogadva eseményt.
 
-![Use case 1 MSC](/pictures/useCases/OrderSubmittedAndProcessedMSC.png)
-
 **Alternatív lefutások**
 
 #### Alternatív 1
