@@ -61,6 +61,13 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 * Order Rejected
 * Order Cancelled
 
+## Command-ok
+
+* Add order Item
+* Remove Order Item
+* Submit Order
+* Delete Order
+
 ## Aggregate típusok
 
 * Order
