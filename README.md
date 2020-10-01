@@ -37,6 +37,30 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ![Komponens diagram](/pictures/ArchitectureDiagram.png)
 
+## Domain Event-ek
+
+### Inventory
+
+* Item Order Rejected
+* Item Amount Increased
+* Item Amount Decreased
+* Item Stock Created
+* Item Stock Deleted
+
+### Product Catalog
+
+* Product Created
+* Product Deleted
+
+### Order Manager
+
+* Order Item Added
+* Order Item Removed
+* Order Submitted
+* Order Accepted
+* Order Rejected
+* Order Cancelled
+
 ## Use case-ek
 
 ### Use case 1
@@ -57,9 +81,13 @@ Az Inventory ellenőrzi az általa tárolt mennyiséget, de az kevesebb, mint a 
 
 **Felhasználó töröl egy már leadott rendelést**
 
-?Rendelés törlése, de a mennyiség már levonásra került?
-?Rendelés törlése, de még nem lett levonva?
-?rendelés törlése, de már elfogadták?
+Amennyiben a felhasználó törölni szeretne egy rendelést, és a rendelés elérte az elfogadott állapotot, a rendelés törlésre kerül. Az Order Manager elküld egy rendelés törölve eseményt, amire az inventory egy elemmennyiség növelve eseménnyel kompenzál.
+
+#### Alternatív 1
+
+_A rendelés nincsen minimum elfogadott állapotban_
+
+A törölni kívánt rendelés nincsen olyan állapotban, ahol biztonsággal törölni lehet. Az Order Manager megtiltja a cselekményt.
 
 ### Use case 3
 
