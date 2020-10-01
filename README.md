@@ -64,6 +64,7 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 ## Aggregate típusok
 
 * Order
+* ?Product Stock?
 
 ## Use case-ek
 
