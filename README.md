@@ -10,7 +10,7 @@ Az alkalmazás jelenlegi képességei:
 * A tárolt termékek webes felületen való megjelenítése
 * Termékrendelések leadásának biztosítása és adminisztrálása
 
-Az alkalmazés komponensei:
+Az alkalmazás komponensei:
 
 ### Event Store
 
@@ -44,8 +44,9 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 * Item Order Rejected
 * Item Amount Increased
 * Item Amount Decreased
-* Item Stock Created
-* Item Stock Deleted
+* ?Item Stock Created?
+* ?Item Stock Deleted?
+_Ha nincs ezektől függő esemény, kell event, ami most még nem értesít senkit? Read modelnek szüksége van rá._
 
 ### Product Catalog
 
@@ -54,8 +55,10 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ### Order Manager
 
+#### Kosár
 * Order Item Added
 * Order Item Removed
+#### Manager
 * Order Submitted
 * Order Accepted
 * Order Rejected
@@ -63,10 +66,16 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ## Command-ok
 
-* Add order Item
+* Add Order Item
 * Remove Order Item
 * Submit Order
 * Delete Order
+
+* Add Stock
+* Subtract Stock
+
+* Define Product
+* Delete Product
 
 ## Aggregate típusok
 
