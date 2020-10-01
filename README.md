@@ -61,6 +61,10 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 * Order Rejected
 * Order Cancelled
 
+## Aggregate típusok
+
+* Order
+
 ## Use case-ek
 
 ### Use case 1
