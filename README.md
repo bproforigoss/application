@@ -44,8 +44,8 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 * Item Order Rejected
 * Item Amount Increased
 * Item Amount Decreased
-* ?Item Stock Created?
-* ?Item Stock Deleted?
+* Item Stock Created
+* Item Stock Deleted
 _Ha nincs ezektől függő esemény, kell event, ami most még nem értesít senkit? Read modelnek szüksége van rá._
 
 ### Product Catalog
@@ -55,7 +55,7 @@ _Ha nincs ezektől függő esemény, kell event, ami most még nem értesít sen
 
 ### Order Manager
 
-#### Kosár
+#### Cart
 * Order Item Added
 * Order Item Removed
 #### Manager
