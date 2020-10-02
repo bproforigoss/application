@@ -46,7 +46,6 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 * Item Amount Decreased
 * Item Stock Created
 * Item Stock Deleted
-_Ha nincs ezektől függő esemény, kell event, ami most még nem értesít senkit? Read modelnek szüksége van rá._
 
 ### Product Catalog
 
