@@ -28,7 +28,6 @@ A Product Catalog elemek mennyiségének nyilvántartása. Felelősségi köre a
 
 Az áruház által kínált termékek adatait tárolja. Felelősségi köre a _termékek_.
 
-
 ## Design
 
 Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió elemei:
@@ -41,6 +40,8 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ### Inventory
 
+A termékek mennyiségével kapcsolatos változásokat jelző események:
+
 * Item Order Rejected
 * Item Amount Increased
 * Item Amount Decreased
@@ -49,17 +50,19 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ### Product Catalog
 
+A rendszer által ismert termékekről szóló események:
+
 * Product Created
 * Product Deleted
 
 ### Order Manager
 
-#### Cart
+A termékek kiválasztását jelző események:
 
 * Order Item Added
 * Order Item Removed
 
-#### Manager
+A rendelések állapotában beállt változásokat jelző események:
 
 * Order Submitted
 * Order Accepted
@@ -68,13 +71,19 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ## Command-ok
 
+A felhasználóktól várható cselekmények:
+
 * Add Order Item
 * Remove Order Item
 * Submit Order
 * Delete Order
 
+A raktár felől elvárható cselekmények:
+
 * Add Stock
 * Subtract Stock
+
+Az adminisztrátor (vagy raktár) lehetséges cselekményei:
 
 * Create Product
 * Delete Product
