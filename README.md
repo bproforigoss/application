@@ -14,7 +14,7 @@ Az alkalmazás komponensei:
 
 ### Event Store
 
-Event sourcing megvalósítása. (_A kifejezett technológia még kérdéses._)
+Event sourcing megvalósítása. A választott technológia az EventStoreDB.
 
 ### Order Manager
 
