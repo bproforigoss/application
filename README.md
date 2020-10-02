@@ -93,6 +93,8 @@ Az adminisztrátor (vagy raktár) lehetséges cselekményei:
 * Order
 * Product Stock
 
+![Aggregate class diagram](/pictures/aggregatesClassDiagram.png)
+
 ## Use case-ek
 
 ### Use case 1
