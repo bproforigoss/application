@@ -80,7 +80,7 @@ _Ha nincs ezektől függő esemény, kell event, ami most még nem értesít sen
 ## Aggregate típusok
 
 * Order
-* ?Product Stock?
+* Product Stock
 
 ## Use case-ek
 
