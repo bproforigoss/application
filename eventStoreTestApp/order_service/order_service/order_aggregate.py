@@ -1,8 +1,8 @@
 import uuid
-from src.domain import events
-from src.domain.aggregate import Aggregate
-from src.domain.enumerations import OrderStatusEnumeration as ORDER_STATUS
-from src.domain.enumerations import OrderEventEnumeration as ORDER_EVENT_TYPE
+from order_service.domain import domain_events
+from order_service.domain.aggregate import Aggregate
+from order_service.domain.enumerations import OrderStatusEnumeration as ORDER_STATUS
+from order_service.domain.enumerations import OrderEventEnumeration as ORDER_EVENT_TYPE
 
 
 class OrderAggregate(Aggregate):
@@ -13,16 +13,13 @@ class OrderAggregate(Aggregate):
         self.order_items = {}
         self.customer_id = {}
         self.status = ORDER_STATUS.STARTED
-        self.raise_event(events.OrderEvent(ORDER_EVENT_TYPE.OrderStarted,
-                                           self.aggregate_id,
-                                           {"reason": "new session"}))
 
     def apply_event_effects_to_aggregate(self, event_json):
         event_type = event_json["summary"]
         data_dict = event_json["content"]["data"]
 
         if event_type == ORDER_EVENT_TYPE.OrderItemAdded.value:
-            self.order_items[data_dict["item"]] = data_dict["quantity"]
+            self.order_items[data_dict["item"]] += data_dict["quantity"]
 
         elif event_type == ORDER_EVENT_TYPE.OrderItemRemoved.value:
             self.order_items.pop(data_dict["item"])
@@ -47,7 +44,7 @@ class OrderAggregate(Aggregate):
             "item": item,
             "quantity": quantity
         }
-        self.raise_event(events.OrderEvent(ORDER_EVENT_TYPE.OrderItemAdded, self.aggregate_id, payload))
+        self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderItemAdded, self.aggregate_id, payload))
         self.version += 1
 
     def remove_order_item(self, item):
@@ -56,14 +53,17 @@ class OrderAggregate(Aggregate):
             payload = {
                 "item": item,
             }
-            self.raise_event(events.OrderEvent(ORDER_EVENT_TYPE.OrderItemRemoved, self.aggregate_id, payload))
+            self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderItemRemoved, self.aggregate_id, payload))
             self.version += 1
+            return True
+        else:
+            return False
 
     def submit_order(self, name, address):
         self.customer_id["name"] = name
         self.customer_id["address"] = address
         payload = self.customer_id
-        self.raise_event(events.OrderEvent(ORDER_EVENT_TYPE.OrderSubmitted, self.aggregate_id, payload))
+        self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderSubmitted, self.aggregate_id, payload))
         self.version += 1
         self.status = ORDER_STATUS.SUBMITTED
 
@@ -72,8 +72,6 @@ class OrderAggregate(Aggregate):
             payload = {
                 "reason": "Customer submitted delete request"
             }
-            self.raise_event(events.OrderEvent(ORDER_EVENT_TYPE.OrderDeleted, self.aggregate_id, payload))
+            self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderDeleted, self.aggregate_id, payload))
             self.version += 1
             self.status = ORDER_STATUS.DELETED
-        else:
-            print("Order cannot be deleted, still in process!")

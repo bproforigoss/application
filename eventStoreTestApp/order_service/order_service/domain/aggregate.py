@@ -1,6 +1,6 @@
 import uuid
 import requests
-from src import CONFIG
+from order_service import CONFIG
 
 
 class Aggregate:
@@ -14,13 +14,6 @@ class Aggregate:
 
     def raise_event(self, event):
         event.execute()
-
-    """
-    def subscribe(self, stream, group):
-        request = requests.put(f"{CONFIG.EVENTSTORE_SUBSCRIPTION_URL}/{stream}/{group}",
-                               data={"startFrom": "0",
-                                     "resolveLinktos": "false"})
-    """
 
     def load_up(self):
         version = self.version

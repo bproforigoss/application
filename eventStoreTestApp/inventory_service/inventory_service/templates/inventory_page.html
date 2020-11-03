@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<title>Orders Inventory</title>
+<h1>Administrative Site</h1>
+
+<h2>Manage stock</h2>
+
+
+<form method="post">
+    <h3>Create</h3>
+        <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name"><br>
+        <label for="price">Price:</label><br>
+            <input type="text" id="price" name="price"><br>
+        <label for="currency">Currency:</label><br>
+            <input type="text" id="currency" name="currency"><br>
+    <input type="submit" name="create" value="Create" formaction="/inventory/create">
+</form>
+
+
+<form method="post">
+    <h3>Delete</h3>
+        <label for="namedelete">Name:</label><br>
+            <input type="text" id="namedelete" name="namedelete"><br>
+    <input type="submit" name="delete" value="Delete" formaction="/inventory/delete">
+</form>
+
+<form method="post">
+    <h3>Add or subtract</h3>
+        <label for="nameaddsubtract">Name:</label><br>
+            <input type="text" id="nameaddsubtract" name="nameaddsubtract"><br>
+        <label for="amountaddsubtract">Amount:</label><br>
+            <input type="text" id="amountaddsubtract" name="amountaddsubtract"><br>
+    <input type="submit" name="add" value="Add" formaction="/inventory/add">
+    <input type="submit" name="subtract" value="Subtract" formaction="/inventory/subtract">
+</form>
+
+{% if error %}
+    <p>Error: error</p>
+{% endif %}
+
+<table>
+    <p>Stock:</p>
+    {% for name in inventory.keys() %}
+        <p>Item: {{ name }} | Quantity: {{ inventory[name] }}</p>
+    {% endfor %}
+</table>

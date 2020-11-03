@@ -1,15 +1,15 @@
-from src.domain import events
-from src.domain.aggregate import Aggregate
-from src.domain.enumerations import InventoryEventEnumeration as INVENTORY_EVENT_TYPE
-from src.domain.enumerations import ProductStockStatusEnumeration as PRODUCT_STOCK_STATUS
+from inventory_service.domain import domain_events
+from inventory_service.domain.aggregate import Aggregate
+from inventory_service.domain.enumerations import InventoryEventEnumeration as INVENTORY_EVENT_TYPE
+from inventory_service.domain.enumerations import ProductStockStatusEnumeration as PRODUCT_STOCK_STATUS
 
 
 class ProductStockAggregate(Aggregate):
 
-    def __init__(self, name, quantity):
+    def __init__(self, name, amount):
         super().__init__()
         self.name = name
-        self.quantity = quantity
+        self.amount = amount
         self.status = PRODUCT_STOCK_STATUS.INACTIVE
 
     def apply_event_effects_to_aggregate(self, event_json):
@@ -20,10 +20,10 @@ class ProductStockAggregate(Aggregate):
             self.status = PRODUCT_STOCK_STATUS.CREATED
 
         elif event_type is INVENTORY_EVENT_TYPE.StockAdded.value:
-            self.quantity = data_dict["quantity"]
+            self.amount += data_dict["amount"]
 
         elif event_type is INVENTORY_EVENT_TYPE.StockSubtracted.value:
-            self.quantity = data_dict["quantity"]
+            self.amount -= data_dict["amount"]
 
         elif event_type is INVENTORY_EVENT_TYPE.StockDeleted.value:
             self.status = PRODUCT_STOCK_STATUS.DELETED
@@ -32,7 +32,7 @@ class ProductStockAggregate(Aggregate):
         payload = {
             "reason": reason
         }
-        self.raise_event(events.StockEvent(INVENTORY_EVENT_TYPE.StockCreated, self.aggregate_id, payload))
+        self.raise_event(domain_events.StockEvent(INVENTORY_EVENT_TYPE.StockCreated, self.aggregate_id, payload))
         self.version += 1
         self.status = PRODUCT_STOCK_STATUS.CREATED
 
@@ -40,23 +40,23 @@ class ProductStockAggregate(Aggregate):
         payload = {
             "reason": reason
         }
-        self.raise_event(events.StockEvent(INVENTORY_EVENT_TYPE.StockDeleted, self.aggregate_id, payload))
+        self.raise_event(domain_events.StockEvent(INVENTORY_EVENT_TYPE.StockDeleted, self.aggregate_id, payload))
         self.version += 1
         self.status = PRODUCT_STOCK_STATUS.DELETED
 
     def add_stock(self, quantity):
-        self.quantity += quantity
+        self.amount += quantity
         payload = {
-            "quantity": str(self.quantity)
+            "amount": str(quantity)
         }
-        self.raise_event(events.StockEvent(INVENTORY_EVENT_TYPE.StockAdded, self.aggregate_id, payload))
+        self.raise_event(domain_events.StockEvent(INVENTORY_EVENT_TYPE.StockAdded, self.aggregate_id, payload))
         self.version += 1
 
     def subtract_stock(self, quantity):
-        if self.quantity <= quantity:
-            self.quantity -= quantity
+        if self.amount >= quantity:
+            self.amount -= quantity
             payload = {
-                "quantity": str(self.quantity)
+                "amount": str(quantity)
             }
-            self.raise_event(events.StockEvent(INVENTORY_EVENT_TYPE.StockSubtracted, self.aggregate_id, payload))
+            self.raise_event(domain_events.StockEvent(INVENTORY_EVENT_TYPE.StockSubtracted, self.aggregate_id, payload))
             self.version += 1
