@@ -24,7 +24,7 @@ def create_order_session(session_id):
 @app.route('/order/add', methods=['GET', 'POST'])
 def add_to_order_reroute():
     form = request.form
-    if form["order_id"] is not "" and form["item"] is not "" and form["amount"] is not "":
+    if form["order_id"] != "" and form["item"] != "" and form["amount"] != "":
         order_web_interface.add_item(form["item"], form["amount"], form["order_id"])
         return add_to_order(form['order_id'], form["item"], form["amount"])
     else:
@@ -39,7 +39,7 @@ def add_to_order(session_id, item, amount):
 @app.route('/order/delete', methods=['GET', 'POST'])
 def delete_from_order_reroute():
     form = request.form
-    if form["order_id"] is not "" and form["item"] is not "":
+    if form["order_id"] != "" and form["item"] != "":
         if order_web_interface.remove_item(form["item"], form["order_id"]):
             return delete_from_order(form["order_id"], form["item"])
         else:

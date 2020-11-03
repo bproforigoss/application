@@ -16,7 +16,7 @@ def create_product_reroute():
     name = request.form["name"]
     price = request.form["price"]
     currency = request.form["currency"]
-    if name is not "" and price is not "" and currency is not "":
+    if name != "" and price != "" and currency != "":
         return create_product(name, price, currency)
     return inventory_process("Not all required given!")
 
@@ -32,7 +32,7 @@ def create_product(name, price, currency):
 @app.route('/inventory/delete', methods=['GET', 'POST'])
 def delete_product_reroute():
     name = request.form["namedelete"]
-    if name is not "":
+    if name != "":
         return delete_product(name)
     return inventory_process("Not all required given!")
 
@@ -47,7 +47,7 @@ def delete_product(name):
 def add_stock_reroute():
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
-    if name is not "" and amount is not "":
+    if name != "" and amount != "":
         return add_stock(name, amount)
     return inventory_process("Not all required given!")
 
@@ -62,7 +62,7 @@ def add_stock(name, amount):
 def subtract_stock_reroute():
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
-    if name is not "" and amount is not "":
+    if name != "" and amount != "":
         return subtract_stock(name, amount)
     return inventory_process("Not all required given!")
 
