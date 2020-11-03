@@ -1,3 +1,5 @@
+[![GitHub Super-Linter](https://github.com/bproforigoss/application/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 # Microservice-alapú alkalmazás
 
 Itt a fejlesztési és üzemeltetési platformhoz készülő microservice architektúra alapú demo alkalmazás tervei és később forrásfájljai találhatóak.
