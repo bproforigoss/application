@@ -1,7 +1,7 @@
 import json
+import os
 import uuid
 import requests
-from order_service import CONFIG
 
 
 class Event:
@@ -18,9 +18,9 @@ class Event:
             "ES-EventType": self.event_type.value,
             "ES-EventID": str(es_id)
         }
-        request = requests.post(f"{CONFIG.EVENTSTORE_STREAM_URL}/{self.aggregate_id}",
-                                data=json.dumps(self.data),
-                                headers=headers)
+        requests.post(f"{os.getenv('EVENTSTORE_STREAM_URL')}/{self.aggregate_id}",
+                      data=json.dumps(self.data),
+                      headers=headers)
 
 
 class OrderEvent(Event):
