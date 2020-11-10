@@ -1,7 +1,6 @@
 from order_service import order_aggregate
 from order_service.domain import domain_events
-from order_service.domain.enumerations import \
-    OrderEventEnumeration as ORDER_EVENT_TYPE
+from order_service.domain.enumerations import OrderEventEnumeration as ORDER_EVENT_TYPE
 
 user_sessions = {}
 

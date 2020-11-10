@@ -1,9 +1,11 @@
 from inventory_service.domain import domain_events
 from inventory_service.domain.aggregate import Aggregate
-from inventory_service.domain.enumerations import \
-    InventoryEventEnumeration as INVENTORY_EVENT_TYPE
-from inventory_service.domain.enumerations import \
-    ProductStockStatusEnumeration as PRODUCT_STOCK_STATUS
+from inventory_service.domain.enumerations import (
+    InventoryEventEnumeration as INVENTORY_EVENT_TYPE,
+)
+from inventory_service.domain.enumerations import (
+    ProductStockStatusEnumeration as PRODUCT_STOCK_STATUS,
+)
 
 
 class ProductStockAggregate(Aggregate):

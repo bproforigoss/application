@@ -2,10 +2,8 @@ import uuid
 
 from order_service.domain import domain_events
 from order_service.domain.aggregate import Aggregate
-from order_service.domain.enumerations import \
-    OrderEventEnumeration as ORDER_EVENT_TYPE
-from order_service.domain.enumerations import \
-    OrderStatusEnumeration as ORDER_STATUS
+from order_service.domain.enumerations import OrderEventEnumeration as ORDER_EVENT_TYPE
+from order_service.domain.enumerations import OrderStatusEnumeration as ORDER_STATUS
 
 
 class OrderAggregate(Aggregate):
