@@ -8,9 +8,13 @@ user_sessions = {}
 def create_order_session():
     session = order_aggregate.OrderAggregate()
     user_sessions[str(session.aggregate_id)] = session
-    session.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderStarted,
-                                                 session.aggregate_id,
-                                                 {"reason": "new session"}))
+    session.raise_event(
+        domain_events.OrderEvent(
+            ORDER_EVENT_TYPE.OrderStarted,
+            session.aggregate_id,
+            {"reason": "new session"},
+        )
+    )
     return str(session.aggregate_id)
 
 

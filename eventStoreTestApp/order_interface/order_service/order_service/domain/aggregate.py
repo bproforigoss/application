@@ -4,7 +4,6 @@ import requests
 
 
 class Aggregate:
-
     def __init__(self):
         self.aggregate_id = uuid.uuid4()
         self.version = 0
@@ -18,8 +17,10 @@ class Aggregate:
     def load_up(self):
         version = self.version
         while True:
-            request = requests.get(f"{os.getenv('EVENTSTORE_STREAM_URL')}/{self.aggregate_id}/{version}",
-                                   headers={"Accept": "application/vnd.eventstore.atom+json"})
+            request = requests.get(
+                f"{os.getenv('EVENTSTORE_STREAM_URL')}/{self.aggregate_id}/{version}",
+                headers={"Accept": "application/vnd.eventstore.atom+json"},
+            )
             if request.status_code == 200:
                 self.apply_event_effects_to_aggregate(request.json())
                 version += 1

@@ -1,13 +1,17 @@
 from inventory_service.domain import domain_events
 from inventory_service.product_stock_aggregate import ProductStockAggregate
-from inventory_service.domain.enumerations import ProductCatalogEventEnumeration as EVENT_TYPE
+from inventory_service.domain.enumerations import (
+    ProductCatalogEventEnumeration as EVENT_TYPE,
+)
 
 inventory = {}
 
 
 def create_product(product_details):
     stock_id = product_details["name"]
-    event = domain_events.StockEvent(EVENT_TYPE.ProductCreated, stock_id, product_details)
+    event = domain_events.StockEvent(
+        EVENT_TYPE.ProductCreated, stock_id, product_details
+    )
     event.execute()
     create_item_stock(product_details["name"], stock_id)
 
@@ -22,8 +26,11 @@ def create_item_stock(item, stock_id):
 
 def delete_product(product_name):
     if product_name in inventory.keys():
-        event = domain_events.StockEvent(EVENT_TYPE.ProductDeleted, inventory[product_name].aggregate_id,
-                                         {"reason": "administrative action"})
+        event = domain_events.StockEvent(
+            EVENT_TYPE.ProductDeleted,
+            inventory[product_name].aggregate_id,
+            {"reason": "administrative action"},
+        )
         event.execute()
         delete_item_stock(product_name)
         inventory.pop(product_name)

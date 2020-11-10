@@ -6,7 +6,6 @@ from order_service.domain.enumerations import OrderEventEnumeration as ORDER_EVE
 
 
 class OrderAggregate(Aggregate):
-
     def __init__(self):
         super().__init__()
         self.order_id = uuid.uuid4()
@@ -40,11 +39,12 @@ class OrderAggregate(Aggregate):
             self.order_items[item] += quantity
         else:
             self.order_items[item] = quantity
-        payload = {
-            "item": item,
-            "quantity": quantity
-        }
-        self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderItemAdded, self.aggregate_id, payload))
+        payload = {"item": item, "quantity": quantity}
+        self.raise_event(
+            domain_events.OrderEvent(
+                ORDER_EVENT_TYPE.OrderItemAdded, self.aggregate_id, payload
+            )
+        )
         self.version += 1
 
     def remove_order_item(self, item):
@@ -53,7 +53,11 @@ class OrderAggregate(Aggregate):
             payload = {
                 "item": item,
             }
-            self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderItemRemoved, self.aggregate_id, payload))
+            self.raise_event(
+                domain_events.OrderEvent(
+                    ORDER_EVENT_TYPE.OrderItemRemoved, self.aggregate_id, payload
+                )
+            )
             self.version += 1
             return True
         else:
@@ -63,15 +67,21 @@ class OrderAggregate(Aggregate):
         self.customer_id["name"] = name
         self.customer_id["address"] = address
         payload = self.customer_id
-        self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderSubmitted, self.aggregate_id, payload))
+        self.raise_event(
+            domain_events.OrderEvent(
+                ORDER_EVENT_TYPE.OrderSubmitted, self.aggregate_id, payload
+            )
+        )
         self.version += 1
         self.status = ORDER_STATUS.SUBMITTED
 
     def delete_order(self):
         if self.status == ORDER_STATUS.ACCEPTED:
-            payload = {
-                "reason": "Customer submitted delete request"
-            }
-            self.raise_event(domain_events.OrderEvent(ORDER_EVENT_TYPE.OrderDeleted, self.aggregate_id, payload))
+            payload = {"reason": "Customer submitted delete request"}
+            self.raise_event(
+                domain_events.OrderEvent(
+                    ORDER_EVENT_TYPE.OrderDeleted, self.aggregate_id, payload
+                )
+            )
             self.version += 1
             self.status = ORDER_STATUS.DELETED
