@@ -136,6 +136,9 @@ disable=print-statement,
 # it should appear only once). See also the "--disable" option for examples.
 enable=c-extension-no-member
 
+#Black compatible message control
+disable = C0330, C0326
+
 
 [REPORTS]
 
@@ -410,7 +413,8 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-max-line-length=100
+# Changed for compatibility with Black
+max-line-length=88
 
 # Maximum number of lines in a module
 max-module-lines=1000

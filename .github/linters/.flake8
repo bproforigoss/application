@@ -1,0 +1,6 @@
+[flake8]
+
+# Black compatible config file
+
+max-line-length = 88
+extend-ignore = E203

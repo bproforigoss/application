@@ -50,10 +50,11 @@ jobs:
       - name: Lint Code Base
         uses: docker://github/super-linter:v3.13.1
         env:
-          DEFAULT_BRANCH: master
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_PYTHON_PYLINT: true
           VALIDATE_PYTHON_BLACK: true
           VALIDATE_PYTHON_FLAKE8: true
           VALIDATE_PYTHON_ISORT: true
+
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
