@@ -1,3 +1,4 @@
+# pylint: skip-file
 from flask import Flask, render_template, request
 
 import inventory_service.inventory_web_interface
