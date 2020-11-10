@@ -4,4 +4,5 @@
 
 max-line-length = 88
 extend-ignore = E203
-per-file-ignores = __init__.py:F401
+# Error ignores to bypass Flask structure
+per-file-ignores = __init__.py:F401, F821
