@@ -1,8 +1,7 @@
 from inventory_service.domain import domain_events
+from inventory_service.domain.enumerations import \
+    ProductCatalogEventEnumeration as EVENT_TYPE
 from inventory_service.product_stock_aggregate import ProductStockAggregate
-from inventory_service.domain.enumerations import (
-    ProductCatalogEventEnumeration as EVENT_TYPE,
-)
 
 inventory = {}
 
