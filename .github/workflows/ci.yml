@@ -23,13 +23,13 @@ jobs:
       - name: Build and Test Order Microservice
         run: |
           docker build --tag orderservice ./eventStoreTestApp/order_interface
-          docker run --name orderservice -p 5001:5001 orderservice
+          docker run --detach --name orderservice -p 5001:5001 orderservice
           curl -I http://127.0.0.1:5001/order
           docker stop orderservice
         
       - name: Build and Test Inventory Microservice
         run: |
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
-          docker run --name inventoryservice -p 5000:5000 inventoryservice
+          docker run --detach --name inventoryservice -p 5000:5000 inventoryservice
           curl -I http://127.0.0.1:5000/inventory)
           docker stop inventoryservice
