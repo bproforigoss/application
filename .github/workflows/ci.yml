@@ -1,0 +1,27 @@
+name: Build and Publish Docker images
+
+on:
+  push:
+    branches-ignore: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  
+  build-services:
+    
+    name: Build Microservices Docker Images
+    runs-on: ubuntu-latest
+    
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Build Order Microservice
+        run: docker build --tag orderservice ./eventStoreTestApp/order_interface
+        
+      - name: Build Inventory Microservice
+        run: docker build --tag inventoryservice ./eventStoreTestApp/inventory
