@@ -24,6 +24,7 @@ jobs:
         run: |
           docker build --tag orderservice ./eventStoreTestApp/order_interface
           docker run --detach --name orderservice -p 5001:5001 orderservice
+          sleep 5s
           curl -I http://127.0.0.1:5001/order
           docker stop orderservice
         
@@ -31,5 +32,6 @@ jobs:
         run: |
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
           docker run --detach --name inventoryservice -p 5000:5000 inventoryservice
-          curl -I http://127.0.0.1:5000/inventory)
+          sleep 5s
+          curl -I http://127.0.0.1:5000/inventory
           docker stop inventoryservice
