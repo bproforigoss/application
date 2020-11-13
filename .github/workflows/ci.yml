@@ -59,13 +59,13 @@ jobs:
       - name: Push Order Microservice to GitHub Packages
         uses: docker/build-push-action@v2
         with:
-            repository: bproforigoss/application
             context: ./eventStoreTestApp/order_interface
             file: ./Dockerfile
+            push: true
 
       - name: Push Inventory Microservice to GitHub Packages
         uses: docker/build-push-action@v2
         with:
-            repository: bproforigoss/application
             context: ./eventStoreTestApp/inventory
             file: ./Dockerfile
+            push: true
