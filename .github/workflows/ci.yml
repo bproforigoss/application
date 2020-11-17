@@ -60,6 +60,14 @@ jobs:
         uses: docker/build-push-action@v2
         with:
             context: ./eventStoreTestApp/order_interface
-            file: ./Dockerfile
+            file: ./eventStoreTestApp/order_interface/Dockerfile
             push: true
             tags: bproforigoss/ordermicroservice:latest
+
+      - name: Push Inventory Microservice to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+            context: ./eventStoreTestApp/inventory
+            file: ./eventStoreTestApp/inventory/Dockerfile
+            push: true
+            tags: bproforigoss/inventorymicroservice:latest
