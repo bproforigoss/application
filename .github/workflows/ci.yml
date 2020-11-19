@@ -75,7 +75,7 @@ jobs:
       - name: Initiate EventStoreDB
         run: |
           docker pull eventstore/eventstore:latest
-          docker run --name eventstore-node -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
+          docker run --detach --name eventstore-node -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
           export EVENTSTORE_CONTAINER_URL=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" eventstore-node)
           export EVENTSTORE_STREAM_URL=http://$EVENTSTORE_CONTAINER_URL:2113/streams
       
@@ -83,8 +83,8 @@ jobs:
         run: |
           docker build --tag orderservice ./eventStoreTestApp/order_interface
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
-          docker run --name orderservice -p 5001:5001 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL orderservice
-          docker run --name inventoryservice -p 5000:5000 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL inventoryservice
+          docker run --detach --name orderservice -p 5001:5001 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL orderservice
+          docker run --detach --name inventoryservice -p 5000:5000 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL inventoryservice
       
       - name: Test Application
         run: |
