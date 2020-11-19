@@ -32,7 +32,7 @@ jobs:
         run: pytest ./eventStoreTestApp/inventory/inventory_service
         
       - name: Test Package Inventory Microservice
-        run: pytest .eventStoreTestApp/order_interface/order_service
+        run: pytest ./eventStoreTestApp/order_interface/order_service
     
   build-test-services:
     
