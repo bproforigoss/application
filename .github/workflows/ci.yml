@@ -84,14 +84,16 @@ jobs:
           docker build --tag orderservice ./eventStoreTestApp/order_interface
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
           docker run --detach --name orderservice -p 5001:5001 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL orderservice
+          export ORDERSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservice)
           docker run --detach --name inventoryservice -p 5000:5000 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL inventoryservice
+          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservice)
       
       - name: Test Application
         run: |
           sleep 5
-          curl -d name=TestObject -d price=220 -d currency=HUF http://127.0.0.1:5000/inventory/create
+          curl -d name=TestObject -d price=220 -d currency=HUF http://$INVENTORYSERVICE_IP:5000/inventory/create
           sleep 5
-          export TEST_UUID=$(curl http://127.0.0.1:5001/order/create | awk 'FNR == 4 { print $4=substr($4, 1, 36 )}')
+          export TEST_UUID=$(curl http://$ORDERSERVICE_IP:5001/order/create | awk 'FNR == 4 { print $4=substr($4, 1, 36 )}')
           sleep 5
           curl $EVENTSTORE_STREAM_URL/$TEST_UUID/0 | grep "new session"
           sleep 5
