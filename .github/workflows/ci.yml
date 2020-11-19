@@ -26,8 +26,7 @@ jobs:
       - name: Setup Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest, flask==1.1.2, requests==2.24.0
         
       - name: Test Package Order Microservice
         run: pytest ./eventStoreTestApp/inventory/inventory_service
