@@ -88,9 +88,13 @@ jobs:
       
       - name: Test Application
         run: |
+          sleep 5
           curl -d name=TestObject -d price=220 -d currency=HUF http://127.0.0.1:5000/inventory/create
+          sleep 5
           export TEST_UUID=$(curl http://127.0.0.1:5001/order/create | awk 'FNR == 4 { print $4=substr($4, 1, 36 )}')
+          sleep 5
           curl $EVENTSTORE_STREAM_URL/$TEST_UUID/0 | grep "new session"
+          sleep 5
           curl $EVENTSTORE_STREAM_URL/TestObject/0 | grep TestObject
       
       - name: Teardown
