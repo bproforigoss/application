@@ -75,7 +75,7 @@ jobs:
       - name: Initiate EventStoreDB
         run: |
           docker pull eventstore/eventstore:latest
-          docker run --name eventstore-node -it -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
+          docker run --name eventstore-node -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
           export EVENTSTORE_CONTAINER_URL=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" eventstore-node)
           export EVENTSTORE_STREAM_URL=http://$EVENTSTORE_CONTAINER_URL:2113/streams
       
