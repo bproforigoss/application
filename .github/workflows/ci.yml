@@ -1,4 +1,4 @@
-name: Build and Publish Docker images
+name: CI/CD Processes
 
 on:
   push:
@@ -62,6 +62,42 @@ jobs:
           curl -I http://127.0.0.1:5000/inventory
           docker stop inventoryservice
 
+  test-app-functionality:
+    
+    name: Build and Test Functionality of Containers
+    runs-on: ubuntu-latest
+    
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Initiate EventStoreDB
+        run: |
+          docker pull eventstore/eventstore:latest
+          docker run --name eventstore-node -it -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
+          export EVENTSTORE_CONTAINER_URL=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" eventstore-node)
+          export EVENTSTORE_STREAM_URL=http://$EVENTSTORE_CONTAINER_URL:2113/streams
+      
+      - name: Initiate Application
+        run: |
+          docker build --tag orderservice ./eventStoreTestApp/order_interface
+          docker build --tag inventoryservice ./eventStoreTestApp/inventory
+          docker run --name orderservice -p 5001:5001 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL orderservice
+          docker run --name inventoryservice -p 5000:5000 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL inventoryservice
+      
+      - name: Test Application
+        run: |
+          curl -d name=TestObject -d price=220 -d currency=HUF http://127.0.0.1:5000/inventory/create
+          export TEST_UUID=$(curl http://127.0.0.1:5001/order/create | awk 'FNR == 4 { print $4=substr($4, 1, 36 )}')
+          curl $EVENTSTORE_STREAM_URL/$TEST_UUID/0 | grep "new session"
+          curl $EVENTSTORE_STREAM_URL/TestObject/0 | grep TestObject
+      
+      - name: Teardown
+        run: |
+          docker stop $(docker ps -a -q)
+          docker rm $(docker ps -a -q)
+          
   build-push-action:
     
     name: Build and Push Images to GitHub Container Registry
