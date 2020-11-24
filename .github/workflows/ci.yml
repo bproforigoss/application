@@ -125,10 +125,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      
-      - name: Get Fresh Image Tag Version
-        run: |
-          $TAG = $(git log -1 --pretty=%H)
 
       - name: Push Order Microservice to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -136,7 +132,7 @@ jobs:
             context: ./eventStoreTestApp/order_interface
             file: ./eventStoreTestApp/order_interface/Dockerfile
             push: true
-            tags: ghcr.io/${{ github.repository_owner }}/ordermicroservice:$TAG
+            tags: ghcr.io/${{ github.repository_owner }}/{$GITHUB_SHA}
 
       - name: Push Inventory Microservice to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -144,4 +140,4 @@ jobs:
             context: ./eventStoreTestApp/inventory
             file: ./eventStoreTestApp/inventory/Dockerfile
             push: true
-            tags: ghcr.io/${{ github.repository_owner }}/inventorymicroservice:$TAG
+            tags: ghcr.io/${{ github.repository_owner }}/{$GITHUB_SHA}
