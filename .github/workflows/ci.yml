@@ -53,7 +53,7 @@ jobs:
           export ORDERSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservicenode)
           sleep 5s
           curl http://$ORDERSERVICE_IP:5001/order/health
-          docker stop orderservice
+          docker stop orderservicenode
         
       - name: Build and Test Inventory Microservice
         run: |
@@ -62,7 +62,7 @@ jobs:
           export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservicenode)
           sleep 5s
           curl http://$INVENTORYSERVICE_IP:5000/inventory/health
-          docker stop inventoryservice
+          docker stop inventoryservicenode
 
 #  test-app-functionality:
 #    
@@ -126,13 +126,17 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
       
+      - name: Get Fresh Image Tag Version
+        run: |
+          $TAG = $(git log -1 --pretty=%H)
+
       - name: Push Order Microservice to GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
             context: ./eventStoreTestApp/order_interface
             file: ./eventStoreTestApp/order_interface/Dockerfile
             push: true
-            tags: ghcr.io/${{ github.repository_owner }}/ordermicroservice:$(git log -1 --pretty=%H)
+            tags: ghcr.io/${{ github.repository_owner }}/ordermicroservice:$TAG
 
       - name: Push Inventory Microservice to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -140,4 +144,4 @@ jobs:
             context: ./eventStoreTestApp/inventory
             file: ./eventStoreTestApp/inventory/Dockerfile
             push: true
-            tags: ghcr.io/${{ github.repository_owner }}/inventorymicroservice:$(git log -1 --pretty=%H)
+            tags: ghcr.io/${{ github.repository_owner }}/inventorymicroservice:$TAG
