@@ -1,0 +1,43 @@
+<!doctype html>
+<title>Orders</title>
+<h1>Welcome to Orders!</h1>
+
+<h2>Manage order</h2>
+
+<form method="post">
+    <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+    <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address"><br>
+    <label for="id">Order ID:</label><br>
+        <input type="text" id="id" name="order_id"><br>
+    <label for="item">Item:</label><br>
+        <input type="text" id="item" name="item"><br>
+    <label for="amount">Amount:</label><br>
+        <input type="text" id="amount"  name="amount"><br>
+    <input type="submit" name="add" value="Add" formaction="/order/add">
+    <input type="submit" name="delete" value="Delete" formaction="/order/delete">
+    <input type="submit" name="create" value="Create" formaction="/order/create">
+    <input type="submit" name="submit" value="Submit" formaction="/order/submit">
+</form>
+
+{% if error %}
+    <h1>Error: {{ error }}</h1>
+{% endif %}
+
+{% if session_id %}
+    <h1>Session: {{ session_id }}</h1>
+{% endif %}
+
+{% if added %}
+    <h2>Item added</h2>
+    <p>Item: {{ item }}</p>
+    <p>Amount: {{ amount }}</p>
+{% elif deleted %}
+    <h2>Item deleted</h2>
+    <p>Item: {{ item }}</p>
+{% endif %}
+
+{% if session_submitted %}
+    <h2>Session {{ session_id }} submitted.</h2>
+{% endif %}

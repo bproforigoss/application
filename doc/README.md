@@ -1,5 +1,7 @@
 # Microservice-alapú alkalmazás
 
+[![GitHub Super-Linter](https://github.com/bproforigoss/application/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 Itt a fejlesztési és üzemeltetési platformhoz készülő microservice architektúra alapú demo alkalmazás tervei és később forrásfájljai találhatóak.
 
 ## Az alkalmazás
@@ -38,7 +40,7 @@ Az alkalmazás design terve készítés alatt áll. A jelenleg aktív verzió el
 
 ## Domain Event-ek
 
-### Inventory
+### Inventory event-ek
 
 A termékek mennyiségével kapcsolatos változásokat jelző események:
 
@@ -48,14 +50,14 @@ A termékek mennyiségével kapcsolatos változásokat jelző események:
 * Item Stock Created
 * Item Stock Deleted
 
-### Product Catalog
+### Product Catalog event-ek
 
 A rendszer által ismert termékekről szóló események:
 
 * Product Created
 * Product Deleted
 
-### Order Manager
+### Order Manager event-ek
 
 A termékek kiválasztását jelző események:
 
@@ -101,13 +103,14 @@ Az adminisztrátor (vagy raktár) lehetséges cselekményei:
 
 **Felhasználó lead egy rendelést**
 
-A felhasználó kiválasztja a megrendelendő termékeket és a mennyiséget megadva leadja a rendelését. Az Order Manager ellenőrzi a rendelés helyességét, elküld egy rendelés hozzáadva eseményt. Az értesítést megkapja az Inventory. Az ellenőrzi az általa nyílvántartott termékeket, és ha elegendő van raktáron, elküld egy elemmennyiség csökkentve eseményt. Az Order Manager - amennyiben minden termék el lett fogadva - elküld egy rendelés elfogadva eseményt.
+A felhasználó kiválasztja a megrendelendő termékeket és a mennyiséget megadva leadja a rendelését. Az Order Manager ellenőrzi a rendelés helyességét, elküld egy rendelés hozzáadva eseményt. Az értesítést megkapja az Inventory.
+Az ellenőrzi az általa nyílvántartott termékeket, és ha elegendő van raktáron, elküld egy elemmennyiség csökkentve eseményt. Az Order Manager - amennyiben minden termék el lett fogadva - elküld egy rendelés elfogadva eseményt.
 
 ![Use case 1 diagram](/pictures/useCases/OrderSubmittedAndAccepted.png)
 
 **Alternatív lefutások**
 
-#### Alternatív 1
+#### Alternatív 1.1
 
 _Az Inventory-ban nincsen annyi termék, mint amennyit rendeltek_
 
@@ -123,7 +126,7 @@ Amennyiben a felhasználó törölni szeretne egy rendelést, és a rendelés el
 
 ![Use case 2 diagram](/pictures/useCases/AcceptedOrderCancelled.png)
 
-#### Alternatív 1
+#### Alternatív 2.1
 
 _A rendelés nincsen minimum elfogadott állapotban_
 
@@ -141,6 +144,6 @@ Az adminisztrátor új terméket akar felvenni a rendszerbe. A Product Catalog k
 
 **A Product Catalog-ban egy terméket törlünk**
 
-Az adminisztrátor törölni szeretne egy terméket. A Product Catalog elküld egy termék törölve eseményt. Erre az Inventory elküld egy raktárelem törölve tombstone eseményt. 
+Az adminisztrátor törölni szeretne egy terméket. A Product Catalog elküld egy termék törölve eseményt. Erre az Inventory elküld egy raktárelem törölve tombstone eseményt.
 
 ![Use case 4 diagram](/pictures/useCases/ProductDeleted.png)
