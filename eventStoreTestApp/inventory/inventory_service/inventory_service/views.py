@@ -75,4 +75,3 @@ def subtract_stock(name, amount):
 @app.route("/inventory/health", methods=["GET"])
 def health_check():
     return Response({"health check": "successful"}, status=200)
-

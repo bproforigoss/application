@@ -71,4 +71,3 @@ def submit_order(session_id):
 @app.route("/order/health", methods=["GET"])
 def health_check():
     return Response({"health check": "successful"}, status=200)
-
