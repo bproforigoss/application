@@ -49,60 +49,62 @@ jobs:
       - name: Build and Test Order Microservice
         run: |
           docker build --tag orderservice ./eventStoreTestApp/order_interface
-          docker run --detach --name orderservice -p 5001:5001 orderservice
+          docker run --detach --name orderservicenode -p 5001:5001 orderservice
+          export ORDERSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservicenode)
           sleep 5s
-          curl -I http://127.0.0.1:5001/order
+          curl http://$ORDERSERVICE_IP:5001/order/health
           docker stop orderservice
         
       - name: Build and Test Inventory Microservice
         run: |
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
-          docker run --detach --name inventoryservice -p 5000:5000 inventoryservice
+          docker run --detach --name inventoryservicenode -p 5000:5000 inventoryservice
+          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservicenode)
           sleep 5s
-          curl -I http://127.0.0.1:5000/inventory
+          curl http://$INVENTORYSERVICE_IP:5000/inventory/health
           docker stop inventoryservice
 
-  test-app-functionality:
-    
-    name: Build and Test Functionality of Containers
-    runs-on: ubuntu-latest
-    
-    steps:
-      
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
-      - name: Initiate EventStoreDB
-        run: |
-          docker pull eventstore/eventstore:latest
-          docker run --detach --name eventstore-node -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
-          export EVENTSTORE_CONTAINER_URL=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" eventstore-node)
-          export EVENTSTORE_STREAM_URL=http://$EVENTSTORE_CONTAINER_URL:2113/streams
-      
-      - name: Initiate Application
-        run: |
-          docker build --tag orderservice ./eventStoreTestApp/order_interface
-          docker build --tag inventoryservice ./eventStoreTestApp/inventory
-          docker run --detach --name orderservice -p 5001:5001 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL orderservice
-          export ORDERSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservice)
-          docker run --detach --name inventoryservice -p 5000:5000 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL inventoryservice
-          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservice)
-      
-      - name: Test Application
-        run: |
-          sleep 5
-          curl -d name=TestObject -d price=220 -d currency=HUF http://$INVENTORYSERVICE_IP:5000/inventory/create
-          sleep 5
-          export TEST_UUID=$(curl http://$ORDERSERVICE_IP:5001/order/create | awk 'FNR == 4 { print $4=substr($4, 1, 36 )}')
-          sleep 5
-          curl $EVENTSTORE_STREAM_URL/$TEST_UUID/0 | grep "new session"
-          sleep 5
-          curl $EVENTSTORE_STREAM_URL/TestObject/0 | grep TestObject
-      
-      - name: Teardown
-        run: |
-          docker stop $(docker ps -a -q)
-          docker rm $(docker ps -a -q)
+#  test-app-functionality:
+#    
+#    name: Build and Test Functionality of Containers
+#    runs-on: ubuntu-latest
+#    
+#    steps:
+#      
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#      
+#      - name: Initiate EventStoreDB
+#        run: |
+#          docker pull eventstore/eventstore:latest
+#          docker run --detach --name eventstore-node -p 2113:2113 -p 1113:1113 eventstore/eventstore --insecure --enable-atom-pub-over-http
+#          export EVENTSTORE_CONTAINER_URL=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" eventstore-node)
+#          export EVENTSTORE_STREAM_URL=http://$EVENTSTORE_CONTAINER_URL:2113/streams
+#      
+#      - name: Initiate Application
+#        run: |
+#          docker build --tag orderservice ./eventStoreTestApp/order_interface
+#          docker build --tag inventoryservice ./eventStoreTestApp/inventory
+#          docker run --detach --name orderservice -p 5001:5001 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL orderservice
+#          export ORDERSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservice)
+#          docker run --detach --name inventoryservice -p 5000:5000 -e EVENTSTORE_STREAM_URL=$EVENTSTORE_STREAM_URL inventoryservice
+#          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservice)
+#      
+#      - name: Test Application
+#        run: |
+#          sleep 5
+#          curl -d name=TestObject -d price=220 -d currency=HUF http://$INVENTORYSERVICE_IP:5000/inventory/create
+#          sleep 5
+#          export TEST_UUID=$(curl http://$ORDERSERVICE_IP:5001/order/create | awk 'FNR == 4 { print $4=substr($4, 1, 36 )}')
+#          sleep 5
+#          curl $EVENTSTORE_STREAM_URL/$TEST_UUID/0 | grep "new session"
+#          sleep 5
+#          curl $EVENTSTORE_STREAM_URL/TestObject/0 | grep TestObject
+#      
+#      - name: Teardown
+#        run: |
+#          docker stop $(docker ps -a -q)
+#          docker rm $(docker ps -a -q)
           
   build-push-action:
     
@@ -130,7 +132,7 @@ jobs:
             context: ./eventStoreTestApp/order_interface
             file: ./eventStoreTestApp/order_interface/Dockerfile
             push: true
-            tags: ghcr.io/${{ github.repository_owner }}/ordermicroservice:latest
+            tags: ghcr.io/${{ github.repository_owner }}/ordermicroservice:$(git log -1 --pretty=%H)
 
       - name: Push Inventory Microservice to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -138,4 +140,4 @@ jobs:
             context: ./eventStoreTestApp/inventory
             file: ./eventStoreTestApp/inventory/Dockerfile
             push: true
-            tags: ghcr.io/${{ github.repository_owner }}/inventorymicroservice:latest
+            tags: ghcr.io/${{ github.repository_owner }}/inventorymicroservice:$(git log -1 --pretty=%H)
