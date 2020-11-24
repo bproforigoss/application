@@ -55,5 +55,6 @@ jobs:
           VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_PYTHON_BLACK: true
 
+          FILTER_REGEX_EXCLUDE: .*doc/.*
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
