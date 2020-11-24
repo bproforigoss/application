@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, Response
 from inventory_service import inventory_web_interface, app
 
 
@@ -70,3 +70,9 @@ def subtract_stock_reroute():
 def subtract_stock(name, amount):
     inventory_web_interface.decrease_item_amount(name, amount)
     return inventory_process()
+
+
+@app.route("/inventory/health", methods=["GET"])
+def health_check():
+    return Response({"health check": "successful"}, status=200)
+

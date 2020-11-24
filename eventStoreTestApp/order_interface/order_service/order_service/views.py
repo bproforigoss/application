@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, Response
 from order_service import order_web_interface, app
 
 
@@ -66,3 +66,9 @@ def submit_order(session_id):
     return render_template(
         "order_page.html", session_id=session_id, session_submitted=True
     )
+
+
+@app.route("/order/health", methods=["GET"])
+def health_check():
+    return Response({"health check": "successful"}, status=200)
+
