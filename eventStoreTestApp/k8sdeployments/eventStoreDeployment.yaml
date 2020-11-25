@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventstore-deployment
+  labels:
+    app: eventstoredb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eventstoredb
+  template:
+    metadata:
+      labels:
+        app: eventstoredb
+    spec:
+      containers:
+      - name: eventstoredb
+        image: eventstore/eventstore:20.6.1-buster-slim
+        ports:
+        - containerPort: 2113

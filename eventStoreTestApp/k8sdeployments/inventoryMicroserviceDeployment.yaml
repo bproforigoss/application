@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-deployment
+  labels:
+    app: inventorymicroservice
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: inventorymicroservice
+  template:
+    metadata:
+      labels:
+        app: inventorymicroservice
+  spec:
+    containers:
+    - name: inventory
+      image: ghcr.io/bproforigoss/inventorymicroservice
+      ports:
+      - containerPort: 5000

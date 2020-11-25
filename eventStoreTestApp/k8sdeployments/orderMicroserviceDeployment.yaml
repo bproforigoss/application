@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderinterface-deployment
+  labels:
+    app: ordermicroservice
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: ordermicroservice
+  template:
+    metadata:
+      labels:
+        app: ordermicroservice
+  spec:
+    containers:
+    - name: inventory
+      image: ghcr.io/bproforigoss/ordermicroservice
+      ports:
+      - containerPort: 5001
