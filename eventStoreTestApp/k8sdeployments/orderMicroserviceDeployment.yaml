@@ -13,9 +13,9 @@ spec:
     metadata:
       labels:
         app: ordermicroservice
-  spec:
-    containers:
-    - name: inventory
-      image: ghcr.io/bproforigoss/ordermicroservice
-      ports:
-      - containerPort: 5001
+    spec:
+      containers:
+      - name: inventory
+        image: ghcr.io/bproforigoss/ordermicroservice
+        ports:
+        - containerPort: 5001
