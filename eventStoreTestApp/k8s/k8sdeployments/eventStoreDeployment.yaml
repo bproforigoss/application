@@ -1,11 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: test-app-development
   name: eventstore-deployment
   labels:
     app: eventstoredb
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: eventstoredb

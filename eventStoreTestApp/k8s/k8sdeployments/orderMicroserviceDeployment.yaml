@@ -1,11 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: test-app-development
   name: orderinterface-deployment
   labels:
     app: ordermicroservice
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
       app: ordermicroservice
