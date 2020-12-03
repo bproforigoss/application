@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-app-ingress
+spec:
+  rules:
+  - http:
+    paths:
+    - path: /inventory
+      pathType: Exact
+      backend:
+        service:
+          name: inventorymicroservice-service
+          port:
+            number: 5000
+    - path: /orders
+      pathType: Exact
+      backend:
+        service:
+          name: ordermicroservice-service
+          port:
+            number: 5001
+    - path: /admin
+      pathType: Exact
+      backend:
+        service:
+          name: eventstoredb-service
+          port:
+            number: 2113

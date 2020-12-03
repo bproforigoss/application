@@ -19,5 +19,9 @@ spec:
       - name: eventstoredb
         image: eventstore/eventstore:20.6.1-buster-slim
         args: ["--insecure", "--enable-atom-pub-over-http"]
+        livenessProbe:
+          httpGet:
+            port: 2113
+            path: /health/live
         ports:
         - containerPort: 2113

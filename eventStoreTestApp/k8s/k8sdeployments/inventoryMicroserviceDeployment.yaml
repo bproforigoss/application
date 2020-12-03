@@ -18,5 +18,9 @@ spec:
       containers:
       - name: inventory
         image: ghcr.io/bproforigoss/inventorymicroservice
+        livenessProbe:
+          httpGet:
+            port: 5000
+            path: /health
         ports:
         - containerPort: 5000

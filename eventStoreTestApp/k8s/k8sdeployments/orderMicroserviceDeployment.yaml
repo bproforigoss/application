@@ -18,5 +18,9 @@ spec:
       containers:
       - name: inventory
         image: ghcr.io/bproforigoss/ordermicroservice
+        livenessProbe:
+          httpGet:
+            port: 5001
+            path: /health
         ports:
         - containerPort: 5001
