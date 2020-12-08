@@ -59,7 +59,7 @@ jobs:
         run: |
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
           docker run --detach --name inventoryservicenode -p 5000:5000 inventoryservice
-          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservicenode)
+          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservicenode)
           sleep 5s
           curl http://$INVENTORYSERVICE_IP:5000/health
           docker stop inventoryservicenode
