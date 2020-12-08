@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt 
+RUN pip install --no-cahce-dir -r requirements.txt 
 
 COPY order_service .
 
