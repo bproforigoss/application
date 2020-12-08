@@ -13,10 +13,10 @@ def client(app):
 
 
 def test_proper_html_on_first_index_request(client):
-    res = client.get("/order")
+    res = client.get("/")
     assert res.status_code == 200
 
 
 def test_health_check(client):
-    res = client.get("/order/health")
+    res = client.get("/health")
     assert res.status_code == 200
