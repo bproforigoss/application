@@ -4,13 +4,11 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt 
+RUN pip install --no-cache-dir -r requirements.txt 
 
 COPY order_service .
 
 ENV FLASK_APP=order_service
-
-ENV EVENTSTORE_STREAM_URL=http://0.0.0.0:2113/streams
 
 EXPOSE 5001
 

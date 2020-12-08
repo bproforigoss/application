@@ -50,15 +50,17 @@ jobs:
         run: |
           docker build --tag orderservice ./eventStoreTestApp/order_interface
           docker run --detach --name orderservicenode -p 5001:5001 orderservice
+          export ORDERSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderservicenode)
           sleep 5s
-          curl http://$ORDERSERVICE_IP:5001/order/health
+          curl http://$ORDERSERVICE_IP:5001/health
           docker stop orderservicenode
         
       - name: Build and Test Inventory Microservice
         run: |
           docker build --tag inventoryservice ./eventStoreTestApp/inventory
           docker run --detach --name inventoryservicenode -p 5000:5000 inventoryservice
+          export INVENTORYSERVICE_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' inventoryservicenode)
           sleep 5s
-          curl http://$INVENTORYSERVICE_IP:5000/inventory/health
+          curl http://$INVENTORYSERVICE_IP:5000/health
           docker stop inventoryservicenode
 
