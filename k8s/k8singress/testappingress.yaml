@@ -6,27 +6,31 @@ spec:
   rules:
     - host: inventory.bprof.gesz.dev 
       http:
-      paths:
-      - path: /inventory
-        pathType: Exact
-        backend:
-          service:
-            name: inventorymicroservice-service
-            port:
-              number: 5000
+        paths:
+        - path: /inventory
+          pathType: Exact
+          backend:
+            service:
+              name: inventorymicroservice-service
+              port:
+                number: 5000
     - host: order.bprof.gesz.dev
-      - path: /orders
-        pathType: Exact
-        backend:
-          service:
-            name: ordermicroservice-service
-            port:
-              number: 5001
+      http:
+        paths:
+        - path: /orders
+          pathType: Exact
+          backend:
+            service:
+              name: ordermicroservice-service
+              port:
+                number: 5001
     - host: db.bprof.gesz.dev
-      - path: /admin
-        pathType: Exact
-        backend:
-          service:
-            name: eventstoredb-service
-            port:
-              number: 2113
+      http:
+        paths:
+        - path: /admin
+          pathType: Exact
+          backend:
+            service:
+              name: eventstoredb-service
+              port:
+                number: 2113
