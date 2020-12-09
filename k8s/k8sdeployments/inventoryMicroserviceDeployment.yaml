@@ -21,7 +21,7 @@ spec:
             name: eventsourcing-testapp-configmap
       containers:
       - name: inventory
-        image: ghcr.io/bproforigoss/inventorymicroservice
+        image: ghcr.io/bproforigoss/inventorymicroservice:703de3adbe263096c4f752266eaaa5629f8d77b6
         env:
           - name: EVENTSTORE_WEBSCHEME
             valueFrom:
