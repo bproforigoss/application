@@ -4,7 +4,8 @@ metadata:
   name: test-app-ingress
 spec:
   rules:
-  - http:
+    - host: inventory.bprof.gesz.dev 
+      http:
       paths:
       - path: /inventory
         pathType: Exact
@@ -13,6 +14,7 @@ spec:
             name: inventorymicroservice-service
             port:
               number: 5000
+    - host: order.bprof.gesz.dev
       - path: /orders
         pathType: Exact
         backend:
@@ -20,6 +22,7 @@ spec:
             name: ordermicroservice-service
             port:
               number: 5001
+    - host: db.bprof.gesz.dev
       - path: /admin
         pathType: Exact
         backend:

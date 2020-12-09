@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eventsourcing-testapp-configmap
+data:
+  eventstoredb_webscheme: "HTTP"
+  eventstoredb_location: "eventstoredb-service"
+  eventstoredb_stream_port: "2113"
