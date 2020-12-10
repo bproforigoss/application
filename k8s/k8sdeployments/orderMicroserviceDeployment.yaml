@@ -15,9 +15,34 @@ spec:
       labels:
         app: ordermicroservice
     spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: eventsourcing-testapp-configmap
       containers:
       - name: inventory
-        image: ghcr.io/bproforigoss/ordermicroservice
+        image: ghcr.io/bproforigoss/ordermicroservice:703de3adbe263096c4f752266eaaa5629f8d77b6
+        env:
+          - name: EVENTSTORE_WEBSCHEME
+            valueFrom:
+              configMapKeyRef:
+                name: eventsourcing-testapp-configmap
+                key: eventstoredb_webscheme
+          - name: EVENTSTORE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: eventsourcing-testapp-configmap
+                key: eventstoredb_location
+          - name: EVENTSTORE_STREAM_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: eventsourcing-testapp-configmap
+                key: eventstoredb_stream_port
+          - name: EVENTSTORE_STREAM_URL
+            value: "$(EVENTSTORE_WEBSCHEME)://$(EVENTSTORE_URL):$(EVENTSTORE_STREAM_PORT)/streams"
+        volumeMounts:
+          - name: config-volume
+            mountPath: "/etc/config"
         livenessProbe:
           httpGet:
             port: 5001
