@@ -3,8 +3,14 @@ kind: Ingress
 metadata:
   name: test-app-ingress
 spec:
+  tls:
+    - hosts:
+        - inventory.bprof.gesz.dev
+        - order.bprof.gesz.dev
+        - db.bprof.gesz.dev
+      secretName: test-cert
   rules:
-    - host: inventory.bprof.gesz.dev 
+    - host: inventory.bprof.gesz.dev
       http:
         paths:
         - path: /inventory
