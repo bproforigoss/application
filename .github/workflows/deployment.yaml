@@ -11,26 +11,20 @@ jobs:
 
   k8s-deploy-action:
     
-    name: Build and Push Images to GitHub Container Registry
+    name: Set Up Environment and Apply Manifests
     runs-on: ubuntu-latest
     
     steps:
       
-      - name: Set Cluster Credentials
-        env:
-          kubeconfig: ${{ secrets.KUBECONFIG }}
-        run: |
-          echo $kubeconfig > kubeconfig
-          export KUBECONFIG=$(pwd)/kubeconfig
-      
       - name: Install kubectl
         run: |
-          apt update
-          apt install kubectl
+          sudo apt-get install kubectl
 
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Deploy Infrastructure by Manifests
         run: |
+          export KUBECONFIG=$(pwd)/kubeconfig
+          cd k8s
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
