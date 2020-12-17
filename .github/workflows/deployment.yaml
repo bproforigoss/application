@@ -11,7 +11,7 @@ jobs:
 
   k8s-deploy-action:
     
-    name: Build and Push Images to GitHub Container Registry
+    name: Set Up Environment and Apply Manifests
     runs-on: ubuntu-latest
     
     steps:
@@ -32,5 +32,5 @@ jobs:
 
       - name: Deploy Infrastructure by Manifests
         run: |
-          cd application/k8s
+          cd k8s
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
