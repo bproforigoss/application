@@ -2,12 +2,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: test-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
+  tls:
+    - hosts:
+        - inventory.bprof.gesz.dev
+        - order.bprof.gesz.dev
+        - db.bprof.gesz.dev
+      secretName: app-test-cert
   rules:
-    - host: inventory.bprof.gesz.dev 
+    - host: inventory.bprof.gesz.dev
       http:
         paths:
-        - path: /inventory
+        - path: /inventory(/?)(.*)
           pathType: Exact
           backend:
             service:
@@ -17,7 +26,7 @@ spec:
     - host: order.bprof.gesz.dev
       http:
         paths:
-        - path: /orders
+        - path: /order(/?)(.*)
           pathType: Exact
           backend:
             service:
@@ -27,7 +36,7 @@ spec:
     - host: db.bprof.gesz.dev
       http:
         paths:
-        - path: /admin
+        - path: /admin(/?)(.*)
           pathType: Exact
           backend:
             service:
