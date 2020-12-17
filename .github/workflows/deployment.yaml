@@ -25,6 +25,6 @@ jobs:
 
       - name: Deploy Infrastructure by Manifests
         run: |
-          cd k8s
           export KUBECONFIG=$(pwd)/kubeconfig
+          cd k8s
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
