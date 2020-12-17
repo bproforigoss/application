@@ -9,7 +9,7 @@ spec:
   - order.bprof.gesz.dev
   - db.bprof.gesz.dev
   issuerRef:
-    name: letsencrypt
+    name: letsencrypt-staging
     kind: ClusterIssuer
     group: cert-manager.io
   secretName: app-test-cert
