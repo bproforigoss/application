@@ -17,8 +17,10 @@ jobs:
     steps:
       
       - name: Set Cluster Credentials
+        env:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
         run: |
-          echo ${{ secrets.KUBECONFIG }} > kubeconfig
+          echo $kubeconfig > kubeconfig
           export KUBECONFIG=$(pwd)/kubeconfig
       
       - name: Install kubectl
