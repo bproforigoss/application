@@ -1,0 +1,28 @@
+name: Kubernetes Deployment
+
+on:
+  push:
+    branches: [master]
+    paths:
+    - 'k8s/**'
+
+jobs:
+
+  k8s-deploy-action:
+    
+    name: Build and Push Images to GitHub Container Registry
+    runs-on: ubuntu-latest
+    
+    steps:
+      
+      - name: Set Cluster Credentials
+        run: |
+          echo ${{ secrets.KUBECONFIG }} > kubeconfig
+          export KUBECONFIG=$(pwd)/kubeconfig
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy Infrastructure by Manifests
+        run: |
+          kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
