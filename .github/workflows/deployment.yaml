@@ -20,7 +20,9 @@ jobs:
         env:
           kubeconfig: ${{ secrets.KUBECONFIG }}
         run: |
+          echo $kubeconfig
           echo $kubeconfig > kubeconfig
+          cat kubeconfig
           export KUBECONFIG=$(pwd)/kubeconfig
       
       - name: Install kubectl
@@ -33,4 +35,5 @@ jobs:
       - name: Deploy Infrastructure by Manifests
         run: |
           cd k8s
+          echo $KUBECONFIG
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
