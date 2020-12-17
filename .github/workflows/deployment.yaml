@@ -32,4 +32,5 @@ jobs:
 
       - name: Deploy Infrastructure by Manifests
         run: |
+          cd application/k8s
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
