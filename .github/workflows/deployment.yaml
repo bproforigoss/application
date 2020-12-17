@@ -25,7 +25,7 @@ jobs:
       
       - name: Install kubectl
         run: |
-          apt-get install kubectl
+          sudo apt-get install kubectl
 
       - name: Checkout repository
         uses: actions/checkout@v2
