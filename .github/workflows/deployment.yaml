@@ -19,6 +19,11 @@ jobs:
         run: |
           echo ${{ secrets.KUBECONFIG }} > kubeconfig
           export KUBECONFIG=$(pwd)/kubeconfig
+      
+      - name: Install kubectl
+        run: |
+          apt update
+          apt install kubectl
 
       - name: Checkout repository
         uses: actions/checkout@v2
