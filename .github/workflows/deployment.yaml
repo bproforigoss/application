@@ -15,8 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PRIV_KEY: ${{ secrets.PGP_PRIV_KEY }}
-      KUBECONFIG: "Empty"
-          
+
     steps:
 
       - name: Set up Go Environment
@@ -38,9 +37,9 @@ jobs:
           echo "$PRIV_KEY" > private.key
           gpg --import private.key
           sops --decrypt --in-place ./kubeconfig
-          export KUBECONFIG=$(pwd)/kubeconfig
-
+          
       - name: Deploy Infrastructure by Manifests
-        run: |  
+        run: |
+          export KUBECONFIG=$(pwd)/kubeconfig  
           cd k8s
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
