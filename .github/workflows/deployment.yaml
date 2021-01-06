@@ -36,8 +36,8 @@ jobs:
         run: |
           echo "$PRIV_KEY" > private.key
           gpg --import private.key
-          sops --decrypt --in-place ./application/kubeconfig
-          export KUBECONFIG=$(pwd)/application/kubeconfig
+          sops --decrypt --in-place ./kubeconfig
+          export KUBECONFIG=$(pwd)/kubeconfig
 
       - name: Deploy Infrastructure by Manifests
         run: |  
