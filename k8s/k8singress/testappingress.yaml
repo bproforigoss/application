@@ -18,7 +18,7 @@ spec:
       http:
         paths:
         - path: /inventory(/?)(.*)
-          pathType: Exact
+          pathType: Prefix
           backend:
             service:
               name: inventorymicroservice-service
@@ -28,7 +28,7 @@ spec:
       http:
         paths:
         - path: /order(/?)(.*)
-          pathType: Exact
+          pathType: Prefix
           backend:
             service:
               name: ordermicroservice-service
@@ -38,7 +38,7 @@ spec:
       http:
         paths:
         - path: /admin(/?)(.*)
-          pathType: Exact
+          pathType: Prefix
           backend:
             service:
               name: eventstoredb-service
