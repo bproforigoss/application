@@ -13,18 +13,32 @@ jobs:
     
     name: Set Up Environment and Apply Manifests
     runs-on: ubuntu-latest
-    
+    env:
+      PRIV_KEY: ${{ secrets.PGP_PRIV_KEY }}
+          
     steps:
-      
-      - name: Install kubectl
+
+      - name: Set up Go Environment
+        uses: actions/setup-go@1
+        with:
+          go-version: "1.15.6"
+
+      - name: Install kubectl and Secret OPerationS
         run: |
           sudo apt-get install kubectl
+          wget https://github.com/mozilla/sops/releases/download/v3.6.1/sops_3.6.1_amd64.deb
+          sudo dpkg -i sops_3.6.1_amd64.deb
 
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Deploy Infrastructure by Manifests
+      - name: Set Kubernetes Environment
         run: |
-          export KUBECONFIG=$(pwd)/kubeconfig
+          gpg --import "$PRIV_KEY"
+          sops --decrypt --in-place ./application/kubeconfig
+          export KUBECONFIG=$(pwd)/application/kubeconfig
+
+      - name: Deploy Infrastructure by Manifests
+        run: |  
           cd k8s
           kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
