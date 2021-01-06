@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PRIV_KEY: ${{ secrets.PGP_PRIV_KEY }}
+      KUBECONFIG: "Empty"
           
     steps:
 
