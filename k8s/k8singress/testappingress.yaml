@@ -4,7 +4,7 @@ metadata:
   name: test-app-ingress
   namespace: test-app-development
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
   tls:
@@ -17,8 +17,8 @@ spec:
     - host: inventory.bprof.gesz.dev
       http:
         paths:
-        - path: /inventory(/?)(.*)
-          pathType: Exact
+        - path: /(.*)
+          pathType: Prefix
           backend:
             service:
               name: inventorymicroservice-service
@@ -27,8 +27,8 @@ spec:
     - host: order.bprof.gesz.dev
       http:
         paths:
-        - path: /order(/?)(.*)
-          pathType: Exact
+        - path: /(.*)
+          pathType: Prefix
           backend:
             service:
               name: ordermicroservice-service
@@ -37,8 +37,8 @@ spec:
     - host: db.bprof.gesz.dev
       http:
         paths:
-        - path: /admin(/?)(.*)
-          pathType: Exact
+        - path: /(.*)
+          pathType: Prefix
           backend:
             service:
               name: eventstoredb-service
