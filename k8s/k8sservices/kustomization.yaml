@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- eventstore-service.yaml
+- inventory-service.yaml
+- orderinterface-service.yaml
+

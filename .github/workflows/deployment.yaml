@@ -23,9 +23,11 @@ jobs:
         with:
           go-version: "1.15.6"
 
-      - name: Install kubectl and Secret OPerationS
+      - name: Install kubectl, kustomize and Secret OPerationS
         run: |
           sudo apt-get install kubectl
+          wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.9.2/kustomize_v3.9.2_linux_amd64.tar.gz
+          sudo tar -xf kustomize_v3.9.2_linux_amd64.tar.gz
           wget https://github.com/mozilla/sops/releases/download/v3.6.1/sops_3.6.1_amd64.deb
           sudo dpkg -i sops_3.6.1_amd64.deb
 
@@ -40,6 +42,5 @@ jobs:
           
       - name: Deploy Infrastructure by Manifests
         run: |
-          export KUBECONFIG=$(pwd)/kubeconfig  
-          cd k8s
-          kubectl apply -f ./k8sconfigs/ -f ./k8scerts/ -f ./k8sdeployments/ -f ./k8sservices/ -f ./k8singress/
+          export KUBECONFIG=$(pwd)/kubeconfig
+          ~/kustomize build ./k8s | kubectl apply -f -
