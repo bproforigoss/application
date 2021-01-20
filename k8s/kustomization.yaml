@@ -6,4 +6,5 @@ resources:
 - k8sdeployments
 - k8sservices
 - k8singress
+- k8scerts
 
