@@ -26,8 +26,7 @@ jobs:
       - name: Install kubectl, kustomize and Secret OPerationS
         run: |
           sudo apt-get install kubectl
-          wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.9.2/kustomize_v3.9.2_linux_amd64.tar.gz
-          sudo tar -xf kustomize_v3.9.2_linux_amd64.tar.gz
+          sudo snap install kustomize --channel=3.9.2/stable --classic
           wget https://github.com/mozilla/sops/releases/download/v3.6.1/sops_3.6.1_amd64.deb
           sudo dpkg -i sops_3.6.1_amd64.deb
 
@@ -43,4 +42,4 @@ jobs:
       - name: Deploy Infrastructure by Manifests
         run: |
           export KUBECONFIG=$(pwd)/kubeconfig
-          ~/kustomize build ./k8s | kubectl apply -f -
+          kustomize build ./k8s | kubectl apply -f -
