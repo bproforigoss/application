@@ -26,7 +26,7 @@ jobs:
       - name: Install kubectl, kustomize and Secret OPerationS
         run: |
           sudo apt-get install kubectl
-          sudo snap install kustomize --channel=3.9.2/stable --classic
+          sudo snap install kustomize --channel=stable --classic
           wget https://github.com/mozilla/sops/releases/download/v3.6.1/sops_3.6.1_amd64.deb
           sudo dpkg -i sops_3.6.1_amd64.deb
 
