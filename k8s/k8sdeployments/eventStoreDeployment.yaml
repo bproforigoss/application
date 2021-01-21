@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: eventstoredb
-        image: eventstore/eventstore:20.6.1-buster-slim
+        image: eventstore/eventstore
         args: ["--insecure", "--enable-atom-pub-over-http"]
         livenessProbe:
           httpGet:
