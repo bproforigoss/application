@@ -1,10 +1,7 @@
 name: Package Publishing
 
 on:
-  push:
-    branches: [master]
-    paths:
-    - 'eventStoreTestApp/**'
+  workflow_dispatch:
 
 jobs:
 
