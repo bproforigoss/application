@@ -1,8 +1,8 @@
-name: CI/CD Processes
+name: Application and Image Integrity Tests
 
 on:
   push:
-    branches-ignore: [master]
+    branches: [app-dev]
   pull_request:
     branches: [master]
 
