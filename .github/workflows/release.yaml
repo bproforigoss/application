@@ -4,13 +4,13 @@ on:
   push:
     branches: [master]
     paths:
-    - 'eventStoreTestApp/**'
+      - 'eventStoreTestApp/**'
 
 jobs:
 
-  build-push-action:
+  build-push-update-action:
     
-    name: Build and Push Images to GitHub Container Registry
+    name: Build and Push Images to GHCR, Edit Infrastructure YAML
     runs-on: ubuntu-latest
     
     steps:
@@ -43,3 +43,14 @@ jobs:
             file: ./eventStoreTestApp/inventory/Dockerfile
             push: true
             tags: ghcr.io/${{ github.repository_owner }}/inventorymicroservice:${{ github.sha }}
+
+      - name: Set New Version in Repository Infrastructure Description
+        run: |
+          cd k8s
+          kustomize edit set image ordermicroservice:${{ github.sha }}
+          kustomize edit set image inventorymicroservice:${{ github.sha }}
+
+          git config --global user.name 'Automated CI/CD Agent'
+          git config --global user.email 'kerteszdavid11@gmail.com'
+          git commit -am "Automated kustomize edit for new SHA"
+          git push
