@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'eventStoreTestApp/**'
+  workflow_dispatch:
 
 jobs:
 
