@@ -58,6 +58,6 @@ jobs:
           curl \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
-            -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            -H 'authorization: Bearer ${{ secrets.PAT_FOR_WORKFLOW_RUN }}' \
             $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/workflows/deployment.yaml/dispatches \
             -d '{"ref":"'"$GITHUB_REF"'"}'
