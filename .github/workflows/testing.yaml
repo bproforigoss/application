@@ -28,8 +28,9 @@ jobs:
       - name: Setup Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest flask==1.1.2 requests==2.24.0
-        
+          pip install --no-cache-dir -r ./eventStoreTestApp/inventory/requirements.txt
+          pip install --no-cache-dir -r ./eventStoreTestApp/order_interface/requirements.txt
+
       - name: Test Package Order Microservice
         run: pytest ./eventStoreTestApp/inventory/inventory_service
         
