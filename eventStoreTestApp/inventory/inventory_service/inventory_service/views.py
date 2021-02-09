@@ -3,6 +3,7 @@ from flask import render_template, request, Response
 from prometheus_client import Counter
 
 from inventory_service import inventory_web_interface, app
+from inventory_service.domain.domain_events import Event
 
 
 service_metrics = dict()
@@ -89,5 +90,7 @@ def health_check():
 def metrics():
     readings = []
     for metric in service_metrics.values():
+        readings.append(prometheus_client.generate_latest(metric))
+    for metric in Event.event_metrics.values():
         readings.append(prometheus_client.generate_latest(metric))
     return Response(readings, mimetype="text/plain")
