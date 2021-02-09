@@ -9,7 +9,9 @@ from prometheus_client import Counter
 class Event:
 
     event_metrics = {
-        "events_produced": Counter("events_produced", "Events sent out by this microservice")
+        "events_produced": Counter(
+            "events_produced", "Events sent out by this microservice"
+        )
     }
 
     def __init__(self, event_type, aggregate_id, data):
