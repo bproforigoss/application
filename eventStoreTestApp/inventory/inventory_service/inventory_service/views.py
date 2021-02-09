@@ -1,9 +1,17 @@
+import prometheus_client
 from flask import render_template, request, Response
+from prometheus_client import Counter
+
 from inventory_service import inventory_web_interface, app
+
+
+service_metrics = dict()
+service_metrics["http_counter"] = Counter("http_requests", "HTTP requests served")
 
 
 @app.route("/")
 def inventory_process(error=None):
+    service_metrics["http_counter"].inc()
     inventory = {
         item.name: item.amount for item in inventory_web_interface.inventory.values()
     }
@@ -75,3 +83,11 @@ def subtract_stock(name, amount):
 @app.route("/health", methods=["GET"])
 def health_check():
     return Response({"health check": "successful"}, status=200)
+
+
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    readings = []
+    for metric in service_metrics.values():
+        readings.append(prometheus_client.generate_latest(metric))
+    return Response(readings, mimetype="text/plain")

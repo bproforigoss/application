@@ -12,4 +12,4 @@ ENV FLASK_APP=inventory_service
 
 EXPOSE 5000
 
-CMD ["uwsgi" "--http" "127.0.0.1:5000" "--wsgi-file" "__init__.py" "--callable" "app"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
