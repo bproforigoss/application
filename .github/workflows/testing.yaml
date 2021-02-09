@@ -28,6 +28,7 @@ jobs:
       - name: Setup Dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install pytest==6.2.2
           pip install --no-cache-dir -r ./eventStoreTestApp/inventory/requirements.txt
           pip install --no-cache-dir -r ./eventStoreTestApp/order_interface/requirements.txt
 
