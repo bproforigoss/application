@@ -10,5 +10,5 @@ performance_metrics = {
     ),
     "event_send_duration": Summary(
         "event_send_duration", "Duration of sending an event"
-    )
+    ),
 }
