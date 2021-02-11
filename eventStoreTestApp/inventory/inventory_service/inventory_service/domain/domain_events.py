@@ -3,22 +3,21 @@ import os
 import uuid
 
 import requests
-from prometheus_client import Counter
+
+from .. import prom_logs
 
 
 class Event:
 
-    event_metrics = {
-        "events_produced": Counter(
-            "events_produced", "Events sent out by this microservice"
-        )
-    }
+    events_sent_metric = prom_logs.performance_metrics["events_produced"]
+    event_duration_metric = prom_logs.performance_metrics["event_send_duration"]
 
     def __init__(self, event_type, aggregate_id, data):
         self.event_type = event_type
         self.aggregate_id = aggregate_id
         self.data = data
 
+    @event_duration_metric.time()
     def execute(self):
         es_id = uuid.uuid4()
         headers = {
@@ -31,7 +30,7 @@ class Event:
             data=json.dumps(self.data),
             headers=headers,
         )
-        Event.event_metrics["events_produced"].inc()
+        Event.events_sent_metric.inc()
 
 
 class StockEvent(Event):

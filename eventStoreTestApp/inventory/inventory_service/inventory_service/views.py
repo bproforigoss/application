@@ -1,18 +1,16 @@
 import prometheus_client
 from flask import render_template, request, Response
-from prometheus_client import Counter
 
 from inventory_service import inventory_web_interface, app
-from inventory_service.domain.domain_events import Event
+from . import prom_logs
 
-
-service_metrics = dict()
-service_metrics["http_counter"] = Counter("http_requests", "HTTP requests served")
+http_counter_metric = prom_logs.performance_metrics["http_counter"]
+http_duration_metric = prom_logs.performance_metrics["http_request_duration"]
 
 
 @app.route("/")
 def inventory_process(error=None):
-    service_metrics["http_counter"].inc()
+    http_counter_metric.inc()
     inventory = {
         item.name: item.amount for item in inventory_web_interface.inventory.values()
     }
@@ -20,6 +18,7 @@ def inventory_process(error=None):
 
 
 @app.route("/create", methods=["GET", "POST"])
+@http_duration_metric.time()
 def create_product_reroute():
     name = request.form["name"]
     price = request.form["price"]
@@ -38,6 +37,7 @@ def create_product(name, price, currency):
 
 
 @app.route("/delete", methods=["GET", "POST"])
+@http_duration_metric.time()
 def delete_product_reroute():
     name = request.form["namedelete"]
     if name != "":
@@ -52,6 +52,7 @@ def delete_product(name):
 
 
 @app.route("/add", methods=["GET", "POST"])
+@http_duration_metric.time()
 def add_stock_reroute():
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
@@ -67,6 +68,7 @@ def add_stock(name, amount):
 
 
 @app.route("/subtract", methods=["GET", "POST"])
+@http_duration_metric.time()
 def subtract_stock_reroute():
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
@@ -89,8 +91,6 @@ def health_check():
 @app.route("/metrics", methods=["GET"])
 def metrics():
     readings = []
-    for metric in service_metrics.values():
-        readings.append(prometheus_client.generate_latest(metric))
-    for metric in Event.event_metrics.values():
+    for metric in prom_logs.performance_metrics.values():
         readings.append(prometheus_client.generate_latest(metric))
     return Response(readings, mimetype="text/plain")
