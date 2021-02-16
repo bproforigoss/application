@@ -52,22 +52,22 @@ class ProductStockAggregate(Aggregate):
         self.status = PRODUCT_STOCK_STATUS.DELETED
 
     def add_stock(self, quantity):
-        self.amount += quantity
         payload = {"amount": str(quantity)}
         self.raise_event(
             domain_events.StockEvent(
                 INVENTORY_EVENT_TYPE.StockAdded, self.aggregate_id, payload
             )
         )
+        self.amount += quantity
         self.version += 1
 
     def subtract_stock(self, quantity):
         if self.amount >= quantity:
-            self.amount -= quantity
             payload = {"amount": str(quantity)}
             self.raise_event(
                 domain_events.StockEvent(
                     INVENTORY_EVENT_TYPE.StockSubtracted, self.aggregate_id, payload
                 )
             )
+            self.amount -= quantity
             self.version += 1
