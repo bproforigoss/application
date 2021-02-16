@@ -6,7 +6,6 @@ from inventory_service import inventory_web_interface, app
 from . import prom_logs
 
 http_duration_metric = prom_logs.performance_metrics["http_request_summary"]
-error_metric = prom_logs.performance_metrics["connection_error_summary"]
 
 
 @app.route("/")
@@ -29,7 +28,6 @@ def create_product_reroute():
 
 
 @app.route("/create?<name>&<price>&<currency>", methods=["POST"])
-@error_metric.count_exceptions()
 def create_product(name, price, currency):
     try:
         inventory_web_interface.create_product(
@@ -50,7 +48,6 @@ def delete_product_reroute():
 
 
 @app.route("/delete?<name>", methods=["POST"])
-@error_metric.count_exceptions()
 def delete_product(name):
     try:
         inventory_web_interface.delete_product(name)
@@ -70,7 +67,6 @@ def add_stock_reroute():
 
 
 @app.route("/add?<name>&<amount>", methods=["POST"])
-@error_metric.count_exceptions()
 def add_stock(name, amount):
     try:
         inventory_web_interface.increase_item_amount(name, amount)
@@ -90,7 +86,6 @@ def subtract_stock_reroute():
 
 
 @app.route("/subtract?<name>&<amount>", methods=["POST"])
-@error_metric.count_exceptions()
 def subtract_stock(name, amount):
     try:
         inventory_web_interface.decrease_item_amount(name, amount)
