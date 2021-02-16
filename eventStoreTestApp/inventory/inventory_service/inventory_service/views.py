@@ -4,13 +4,11 @@ from flask import render_template, request, Response
 from inventory_service import inventory_web_interface, app
 from . import prom_logs
 
-http_counter_metric = prom_logs.performance_metrics["http_counter"]
-http_duration_metric = prom_logs.performance_metrics["http_request_duration"]
+http_duration_metric = prom_logs.performance_metrics["http_request_summary"]
 
 
 @app.route("/")
 def inventory_process(error=None):
-    http_counter_metric.inc()
     inventory = {
         item.name: item.amount for item in inventory_web_interface.inventory.values()
     }

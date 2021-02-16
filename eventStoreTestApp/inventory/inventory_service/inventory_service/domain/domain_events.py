@@ -9,8 +9,7 @@ from .. import prom_logs
 
 class Event:
 
-    events_sent_metric = prom_logs.performance_metrics["events_produced"]
-    event_duration_metric = prom_logs.performance_metrics["event_send_duration"]
+    event_duration_metric = prom_logs.performance_metrics["event_send_summary"]
 
     def __init__(self, event_type, aggregate_id, data):
         self.event_type = event_type
@@ -30,7 +29,6 @@ class Event:
             data=json.dumps(self.data),
             headers=headers,
         )
-        Event.events_sent_metric.inc()
 
 
 class StockEvent(Event):
