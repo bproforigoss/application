@@ -34,7 +34,9 @@ def create_product(name, price, currency):
             {"name": name, "price": price, "currency": currency}
         )
     except requests.exceptions.RequestException:
-        return inventory_process("There was a problem connecting to the database services.")
+        return inventory_process(
+            "There was a problem connecting to the database services."
+        )
     return inventory_process()
 
 
@@ -52,7 +54,9 @@ def delete_product(name):
     try:
         inventory_web_interface.delete_product(name)
     except requests.exceptions.RequestException:
-        return inventory_process("There was a problem connecting to the database services.")
+        return inventory_process(
+            "There was a problem connecting to the database services."
+        )
     return inventory_process()
 
 
@@ -71,7 +75,9 @@ def add_stock(name, amount):
     try:
         inventory_web_interface.increase_item_amount(name, amount)
     except requests.exceptions.RequestException:
-        return inventory_process("There was a problem connecting to the database services.")
+        return inventory_process(
+            "There was a problem connecting to the database services."
+        )
     return inventory_process()
 
 
@@ -90,7 +96,9 @@ def subtract_stock(name, amount):
     try:
         inventory_web_interface.decrease_item_amount(name, amount)
     except requests.exceptions.RequestException:
-        return inventory_process("There was a problem connecting to the database services.")
+        return inventory_process(
+            "There was a problem connecting to the database services."
+        )
     return inventory_process()
 
 
