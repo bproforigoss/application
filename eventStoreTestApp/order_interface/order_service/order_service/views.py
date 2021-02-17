@@ -20,9 +20,7 @@ def create_order_session_reroute():
     try:
         created_id = order_web_interface.create_order_session()
     except requests.exceptions.RequestException:
-        return order_process(
-            "There was a problem connecting to the database services."
-        )
+        return order_process("There was a problem connecting to the database services.")
     return create_order_session(created_id)
 
 
@@ -42,9 +40,7 @@ def add_to_order_reroute():
         else:
             return order_process("Not all required filled")
     except requests.exceptions.RequestException:
-        return order_process(
-            "There was a problem connecting to the database services."
-        )
+        return order_process("There was a problem connecting to the database services.")
 
 
 @app.route("/add?<session_id>&<item>&<amount>&<value>", methods=["POST"])
@@ -67,9 +63,7 @@ def delete_from_order_reroute():
         else:
             return order_process("Not all required filled")
     except requests.exceptions.RequestException:
-        return order_process(
-            "There was a problem connecting to the database services."
-        )
+        return order_process("There was a problem connecting to the database services.")
 
 
 @app.route("/delete?<session_id>&<item>&<value>", methods=["POST"])
@@ -84,12 +78,12 @@ def delete_from_order(session_id, item):
 def submit_order_reroute():
     form = request.form
     try:
-        order_web_interface.submit_order(form["name"], form["address"], form["order_id"])
+        order_web_interface.submit_order(
+            form["name"], form["address"], form["order_id"]
+        )
         return submit_order(form["order_id"])
     except requests.exceptions.RequestException:
-        return order_process(
-            "There was a problem connecting to the database services."
-        )
+        return order_process("There was a problem connecting to the database services.")
 
 
 @app.route("/submit?<session_id>", methods=["POST"])
