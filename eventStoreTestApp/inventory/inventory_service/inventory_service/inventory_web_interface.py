@@ -4,6 +4,7 @@ from inventory_service.domain.enumerations import (
 )
 from inventory_service.product_stock_aggregate import ProductStockAggregate
 
+
 inventory = {}
 
 
