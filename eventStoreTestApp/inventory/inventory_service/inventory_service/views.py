@@ -5,7 +5,7 @@ from flask import render_template, request, Response
 from inventory_service import inventory_web_interface, app
 from . import prom_logs
 
-http_duration_metric = prom_logs.performance_metrics["http_request_summary"]
+http_summary_metric = prom_logs.performance_metrics["http_request_summary"]
 
 
 @app.route("/")
@@ -17,7 +17,7 @@ def inventory_process(error=None):
 
 
 @app.route("/create", methods=["GET", "POST"])
-@http_duration_metric.time()
+@http_summary_metric.time()
 def create_product_reroute():
     name = request.form["name"]
     price = request.form["price"]
@@ -41,7 +41,7 @@ def create_product(name, price, currency):
 
 
 @app.route("/delete", methods=["GET", "POST"])
-@http_duration_metric.time()
+@http_summary_metric.time()
 def delete_product_reroute():
     name = request.form["namedelete"]
     if name != "":
@@ -61,7 +61,7 @@ def delete_product(name):
 
 
 @app.route("/add", methods=["GET", "POST"])
-@http_duration_metric.time()
+@http_summary_metric.time()
 def add_stock_reroute():
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
@@ -82,7 +82,7 @@ def add_stock(name, amount):
 
 
 @app.route("/subtract", methods=["GET", "POST"])
-@http_duration_metric.time()
+@http_summary_metric.time()
 def subtract_stock_reroute():
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
@@ -112,4 +112,7 @@ def metrics():
     readings = []
     for metric in prom_logs.performance_metrics.values():
         readings.append(prometheus_client.generate_latest(metric))
+    readings.append(
+        prometheus_client.generate_latest(prometheus_client.PROCESS_COLLECTOR)
+    )
     return Response(readings, mimetype="text/plain")
