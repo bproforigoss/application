@@ -103,4 +103,7 @@ def metrics():
     readings = []
     for metric in prom_logs.performance_metrics.values():
         readings.append(prometheus_client.generate_latest(metric))
+    readings.append(
+        prometheus_client.generate_latest(prometheus_client.PROCESS_COLLECTOR)
+    )
     return Response(readings, mimetype="text/plain")
