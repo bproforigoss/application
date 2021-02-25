@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  version: '2.25.0'
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      component: microservice
+  enableAdminAPI: false

@@ -15,3 +15,4 @@ resources:
 - k8sservices
 - k8singress
 - k8scerts
+- prometheus

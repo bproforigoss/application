@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: inventorymicroservice-servicemonitor
+  labels:
+    component: microservice
+spec:
+  selector:
+    matchLabels:
+      app: inventorymicroservice
+  endpoints:
+    - port: 5000

@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ordermicroservice-servicemonitor
+  labels:
+    component: microservice
+spec:
+  selector:
+    matchLabels:
+      app: ordermicroservice
+  endpoints:
+    - port: 5001
