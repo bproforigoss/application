@@ -9,4 +9,4 @@ spec:
     matchLabels:
       app: inventorymicroservice
   endpoints:
-    - port: 5000
+    - targetPort: 5000

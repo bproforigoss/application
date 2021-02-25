@@ -9,4 +9,4 @@ spec:
     matchLabels:
       app: ordermicroservice
   endpoints:
-    - port: 5001
+    - targetPort: 5001
