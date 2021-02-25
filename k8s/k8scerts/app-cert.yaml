@@ -5,9 +5,9 @@ metadata:
   namespace: test-app-development
 spec:
   dnsNames:
-  - inventory.bprof2.gesz.dev
-  - order.bprof2.gesz.dev
-  - db.bprof2.gesz.dev
+  - inventory.bprof.gesz.dev
+  - order.bprof.gesz.dev
+  - db.bprof.gesz.dev
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
