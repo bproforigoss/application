@@ -24,4 +24,4 @@ spec:
             path: /health/live
         ports:
         - containerPort: 2113
-          name: ADMIN
+          name: admin

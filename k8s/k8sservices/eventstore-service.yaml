@@ -6,6 +6,6 @@ spec:
   selector:
     app: eventstoredb
   ports:
-    - name: ADMIN
+    - name: admin
       port: 2113
-      targetPort: ADMIN
+      targetPort: admin

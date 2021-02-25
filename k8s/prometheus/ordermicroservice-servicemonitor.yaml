@@ -9,4 +9,4 @@ spec:
     matchLabels:
       app: ordermicroservice
   endpoints:
-    - port: HTTP
+    - port: http

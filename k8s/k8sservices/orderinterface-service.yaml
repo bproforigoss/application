@@ -6,6 +6,6 @@ spec:
   selector:
     app: ordermicroservice
   ports:
-    - name: HTTP
+    - name: http
       port: 5001
-      targetPort: HTTP
+      targetPort: http

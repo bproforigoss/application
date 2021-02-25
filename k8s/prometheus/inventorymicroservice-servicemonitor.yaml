@@ -9,4 +9,4 @@ spec:
     matchLabels:
       app: inventorymicroservice
   endpoints:
-    - port: HTTP
+    - port: http
