@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
 - inventorymicroservice-servicemonitor.yaml
-- microservices-prometheus.yaml
 - ordermicroservice-servicemonitor.yaml
