@@ -17,10 +17,11 @@ spec:
       containers:
       - name: eventstoredb
         image: eventstore/eventstore
-        args: ["--insecure", "--enable-atom-pub-over-http"]
+        args: ["--insecure", "--enable-atom-pub-over-http", "--enable-external-tcp"]
         livenessProbe:
           httpGet:
             port: 2113
             path: /health/live
         ports:
         - containerPort: 2113
+          name: ADMIN

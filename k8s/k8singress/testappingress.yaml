@@ -22,7 +22,7 @@ spec:
             service:
               name: inventorymicroservice-service
               port:
-                number: 5000
+                name: HTTP
     - host: order.bprof.gesz.dev
       http:
         paths:
@@ -32,7 +32,7 @@ spec:
             service:
               name: ordermicroservice-service
               port:
-                number: 5001
+                name: HTTP
     - host: db.bprof.gesz.dev
       http:
         paths:
@@ -42,4 +42,4 @@ spec:
             service:
               name: eventstoredb-service
               port:
-                number: 2113
+                name: ADMIN

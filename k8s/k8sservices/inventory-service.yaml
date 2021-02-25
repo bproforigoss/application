@@ -6,6 +6,6 @@ spec:
   selector:
     app: inventorymicroservice
   ports:
-    - protocol: TCP
+    - name: HTTP
       port: 5000
-      targetPort: 5000
+      targetPort: HTTP
