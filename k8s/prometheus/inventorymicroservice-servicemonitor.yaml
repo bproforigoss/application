@@ -7,6 +7,6 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: inventorymicroservice-service
+      app: inventorymicroservice
   endpoints:
     - port: http

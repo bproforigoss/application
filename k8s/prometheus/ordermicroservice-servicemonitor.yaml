@@ -7,6 +7,6 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: orderinterface-service
+      app: ordermicroservice
   endpoints:
     - port: http
