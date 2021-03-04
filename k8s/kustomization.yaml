@@ -1,15 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: "test-app-development"
+namespace: test-app-development
 
 images:
 - name: eventstore/eventstore
   newTag: 20.6.1-buster-slim
 - name: ghcr.io/bproforigoss/inventorymicroservice
-  newTag: fc98d337bd9f7648621a4397c5fdf93ccf0da747
+  newTag: 9fe491759bf97fc8a9cec5ae0aa24bcd8b7b3ab8
 - name: ghcr.io/bproforigoss/ordermicroservice
-  newTag: fc98d337bd9f7648621a4397c5fdf93ccf0da747
+  newTag: 9fe491759bf97fc8a9cec5ae0aa24bcd8b7b3ab8
 
 resources:
 - k8sconfigs
