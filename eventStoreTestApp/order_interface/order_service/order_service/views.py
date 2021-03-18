@@ -31,7 +31,12 @@ def add_to_order():
         if form["order_id"] != "" and form["item"] != "" and form["amount"] != "":
             order_web_interface.add_item(form["item"], form["amount"], form["order_id"])
             return render_template(
-                "order_page.html", session_id=form["order_id"], item=form["item"], amount=form["amount"], added=True)
+                "order_page.html",
+                session_id=form["order_id"],
+                item=form["item"],
+                amount=form["amount"],
+                added=True,
+            )
         else:
             return order_process("Not all required filled")
     except requests.exceptions.RequestException:
@@ -46,7 +51,10 @@ def delete_from_order():
         if form["order_id"] != "" and form["item"] != "":
             if order_web_interface.remove_item(form["item"], form["order_id"]):
                 return render_template(
-                    "order_page.html", item=form["item"], session_id=form["order_id"], deleted=True
+                    "order_page.html",
+                    item=form["item"],
+                    session_id=form["order_id"],
+                    deleted=True,
                 )
             else:
                 return order_process("Not in basket")
