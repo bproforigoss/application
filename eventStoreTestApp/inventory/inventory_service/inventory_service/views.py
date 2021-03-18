@@ -9,6 +9,7 @@ http_summary_metric = prom_logs.performance_metrics["http_request_summary"]
 
 
 @app.route("/", methods=["GET"])
+@http_summary_metric.time()
 def inventory_process(error=None):
     inventory = {
         item.name: item.amount for item in inventory_web_interface.inventory.values()

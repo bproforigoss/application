@@ -9,6 +9,7 @@ http_duration_metric = prom_logs.performance_metrics["http_request_summary"]
 
 
 @app.route("/", methods=["GET"])
+@http_duration_metric.time()
 def order_process(error=None):
     return render_template("order_page.html", error=error)
 
