@@ -36,16 +36,16 @@ class OrderAggregate(Aggregate):
             self.status = ORDER_STATUS.REJECTED
 
     def add_order_item(self, item, quantity):
-        if item in self.order_items.keys():
-            self.order_items[item] += quantity
-        else:
-            self.order_items[item] = quantity
         payload = {"item": item, "quantity": quantity}
         self.raise_event(
             domain_events.OrderEvent(
                 ORDER_EVENT_TYPE.OrderItemAdded, self.aggregate_id, payload
             )
         )
+        if item in self.order_items.keys():
+            self.order_items[item] += quantity
+        else:
+            self.order_items[item] = quantity
         self.version += 1
 
     def remove_order_item(self, item):
