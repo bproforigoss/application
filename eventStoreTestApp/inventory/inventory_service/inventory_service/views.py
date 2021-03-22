@@ -5,12 +5,12 @@ from flask import render_template, request, Response
 from inventory_service import inventory_web_interface, app
 from . import prom_logs
 
-http_summary_metric = prom_logs.performance_metrics["http_request_summary"]
+http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
 @app.route("/", methods=["GET"])
-@http_summary_metric.time()
 def inventory_process(error=None):
+    http_counter_metric.labels(method="GET", endpoint="/").inc()
     inventory = {
         item.name: item.amount for item in inventory_web_interface.inventory.values()
     }
@@ -18,8 +18,8 @@ def inventory_process(error=None):
 
 
 @app.route("/create", methods=["POST"])
-@http_summary_metric.time()
 def create_product():
+    http_counter_metric.labels(method="POST", endpoint="/create").inc()
     name = request.form["name"]
     price = request.form["price"]
     currency = request.form["currency"]
@@ -37,8 +37,8 @@ def create_product():
 
 
 @app.route("/delete", methods=["POST"])
-@http_summary_metric.time()
 def delete_product():
+    http_counter_metric.labels(method="POST", endpoint="/delete").inc()
     name = request.form["namedelete"]
     if name != "":
         try:
@@ -52,8 +52,8 @@ def delete_product():
 
 
 @app.route("/add", methods=["POST"])
-@http_summary_metric.time()
-def add_stock_reroute():
+def add_stock():
+    http_counter_metric.labels(method="POST", endpoint="/add").inc()
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
     if name != "" and amount != "":
@@ -68,8 +68,8 @@ def add_stock_reroute():
 
 
 @app.route("/subtract", methods=["POST"])
-@http_summary_metric.time()
-def subtract_stock_reroute():
+def subtract_stock():
+    http_counter_metric.labels(method="POST", endpoint="/subtract").inc()
     name = request.form["nameaddsubtract"]
     amount = request.form["amountaddsubtract"]
     if name != "" and amount != "":
@@ -85,11 +85,13 @@ def subtract_stock_reroute():
 
 @app.route("/health", methods=["GET"])
 def health_check():
+    http_counter_metric.labels(method="GET", endpoint="/health").inc()
     return Response({"health check": "successful"}, status=200)
 
 
 @app.route("/metrics", methods=["GET"])
 def metrics():
+    http_counter_metric.labels(method="GET", endpoint="/metrics").inc()
     readings = []
     for metric in prom_logs.performance_metrics.values():
         readings.append(prometheus_client.generate_latest(metric))

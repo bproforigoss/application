@@ -1,11 +1,12 @@
 from prometheus_client import Counter, Summary
 
 performance_metrics = {
-    "http_request_summary": Summary(
-        "inventory_http_request_summary", "Summary of HTTP request being served"
+    "http_request_counter": Counter(
+        "inventory_http_request_counter", "Counter of HTTP requests being served",
+        ["method", "endpoint"]
     ),
-    "event_send_summary": Summary(
-        "inventory_event_send_summary", "Summary of egress events"
+    "event_send_counter": Counter(
+        "inventory_event_send_counter", "Counter of egress events"
     ),
     "network_error_counter": Counter(
         "inventory_network_error_counter",

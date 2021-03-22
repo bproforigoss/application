@@ -9,7 +9,7 @@ from .. import prom_logs
 
 class Event:
 
-    event_summary_metric = prom_logs.performance_metrics["event_send_summary"]
+    event_counter_metric = prom_logs.performance_metrics["event_send_counter"]
     network_error_metric = prom_logs.performance_metrics["network_error_counter"]
     http_error_metric = prom_logs.performance_metrics["http_error_counter"]
     timeout_error_metric = prom_logs.performance_metrics["timeout_error_counter"]
@@ -20,7 +20,7 @@ class Event:
         self.aggregate_id = aggregate_id
         self.data = data
 
-    @event_summary_metric.time()
+    @event_counter_metric.inc()
     @network_error_metric.count_exceptions(requests.exceptions.ConnectionError)
     @http_error_metric.count_exceptions(requests.exceptions.HTTPError)
     @timeout_error_metric.count_exceptions(requests.exceptions.Timeout)
