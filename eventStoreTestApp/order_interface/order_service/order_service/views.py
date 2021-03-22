@@ -5,18 +5,18 @@ from flask import render_template, request, Response
 from order_service import order_web_interface, app
 from . import prom_logs
 
-http_duration_metric = prom_logs.performance_metrics["http_request_summary"]
+http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
 @app.route("/", methods=["GET"])
-@http_duration_metric.time()
 def order_process(error=None):
+    http_counter_metric.labels(method="GET", endpoint="/").inc()
     return render_template("order_page.html", error=error)
 
 
 @app.route("/create", methods=["POST"])
-@http_duration_metric.time()
 def create_order_session():
+    http_counter_metric.labels(method="POST", endpoint="/create").inc()
     try:
         created_id = order_web_interface.create_order_session()
         return render_template("order_created.html", id=created_id)
@@ -25,8 +25,8 @@ def create_order_session():
 
 
 @app.route("/add", methods=["POST"])
-@http_duration_metric.time()
 def add_to_order():
+    http_counter_metric.labels(method="POST", endpoint="/add").inc()
     form = request.form
     try:
         if form["order_id"] != "" and form["item"] != "" and form["amount"] != "":
@@ -45,8 +45,8 @@ def add_to_order():
 
 
 @app.route("/delete", methods=["POST"])
-@http_duration_metric.time()
 def delete_from_order():
+    http_counter_metric.labels(method="POST", endpoint="/delete").inc()
     form = request.form
     try:
         if form["order_id"] != "" and form["item"] != "":
@@ -66,8 +66,8 @@ def delete_from_order():
 
 
 @app.route("/submit", methods=["POST"])
-@http_duration_metric.time()
 def submit_order():
+    http_counter_metric.labels(method="POST", endpoint="/submit").inc()
     form = request.form
     try:
         order_web_interface.submit_order(
@@ -82,11 +82,13 @@ def submit_order():
 
 @app.route("/health", methods=["GET"])
 def health_check():
+    http_counter_metric.labels(method="GET", endpoint="/health").inc()
     return Response({"health check": "successful"}, status=200)
 
 
 @app.route("/metrics", methods=["GET"])
 def metrics():
+    http_counter_metric.labels(method="GET", endpoint="/metrics").inc()
     readings = []
     for metric in prom_logs.performance_metrics.values():
         readings.append(prometheus_client.generate_latest(metric))

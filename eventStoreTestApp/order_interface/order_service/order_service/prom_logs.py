@@ -1,11 +1,13 @@
 from prometheus_client import Counter, Summary
 
 performance_metrics = {
-    "http_request_summary": Summary(
-        "orderinterface_http_request_summary", "Summary of HTTP request being served"
+    "http_request_counter": Counter(
+        "orderinterface_http_request_counter",
+        "Counter of HTTP requests being served",
+        ["method", "endpoint"],
     ),
-    "event_send_summary": Summary(
-        "orderinterface_event_send_summary", "Summary of egress events"
+    "event_send_counter": Counter(
+        "orderinterface_event_send_counter", "Counter of egress events"
     ),
     "network_error_counter": Counter(
         "orderinterface_network_error_counter",
@@ -23,3 +25,11 @@ performance_metrics = {
         "Errors caused by exceeding redirection limits",
     ),
 }
+
+performance_metrics["http_request_counter"].labels("GET", "/")
+performance_metrics["http_request_counter"].labels("GET", "/health")
+performance_metrics["http_request_counter"].labels("GET", "/metrics")
+performance_metrics["http_request_counter"].labels("POST", "/create")
+performance_metrics["http_request_counter"].labels("POST", "/delete")
+performance_metrics["http_request_counter"].labels("POST", "/add")
+performance_metrics["http_request_counter"].labels("POST", "/submit")
