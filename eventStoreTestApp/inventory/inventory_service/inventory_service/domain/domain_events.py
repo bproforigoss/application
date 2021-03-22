@@ -20,12 +20,12 @@ class Event:
         self.aggregate_id = aggregate_id
         self.data = data
 
-    @event_counter_metric.inc()
     @network_error_metric.count_exceptions(requests.exceptions.ConnectionError)
     @http_error_metric.count_exceptions(requests.exceptions.HTTPError)
     @timeout_error_metric.count_exceptions(requests.exceptions.Timeout)
     @redirect_error_metric.count_exceptions(requests.exceptions.TooManyRedirects)
     def execute(self):
+        event_counter_metric.inc()
         es_id = uuid.uuid4()
         headers = {
             "Content-Type": "application/json",
