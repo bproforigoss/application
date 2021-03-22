@@ -2,8 +2,9 @@ from prometheus_client import Counter, Summary
 
 performance_metrics = {
     "http_request_counter": Counter(
-        "inventory_http_request_counter", "Counter of HTTP requests being served",
-        ["method", "endpoint"]
+        "inventory_http_request_counter",
+        "Counter of HTTP requests being served",
+        ["method", "endpoint"],
     ),
     "event_send_counter": Counter(
         "inventory_event_send_counter", "Counter of egress events"
