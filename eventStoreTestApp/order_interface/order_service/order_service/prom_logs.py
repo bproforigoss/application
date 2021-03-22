@@ -24,3 +24,11 @@ performance_metrics = {
         "Errors caused by exceeding redirection limits",
     ),
 }
+
+performance_metrics["http_request_counter"].labels("GET", "/")
+performance_metrics["http_request_counter"].labels("GET", "/health")
+performance_metrics["http_request_counter"].labels("GET", "/metrics")
+performance_metrics["http_request_counter"].labels("POST", "/create")
+performance_metrics["http_request_counter"].labels("POST", "/delete")
+performance_metrics["http_request_counter"].labels("POST", "/add")
+performance_metrics["http_request_counter"].labels("POST", "/submit")
