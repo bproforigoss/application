@@ -19,7 +19,7 @@ spec:
           configMap:
             name: eventsourcing-testapp-configmap
       containers:
-      - name: inventory
+      - name: orderinterface
         image: ghcr.io/bproforigoss/ordermicroservice
         env:
           - name: EVENTSTORE_WEBSCHEME
