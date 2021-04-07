@@ -1,3 +1,7 @@
+import logging
+import os
+import sys
+
 import prometheus_client
 import requests
 from flask import render_template, request, Response
@@ -22,6 +26,8 @@ def create_order_session():
         return render_template("order_created.html", id=created_id)
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
+    except Exception as e:
+        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
 
 
 @app.route("/add", methods=["POST"])
@@ -42,6 +48,8 @@ def add_to_order():
             return order_process("Not all required filled")
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
+    except Exception as e:
+        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
 
 
 @app.route("/delete", methods=["POST"])
@@ -63,6 +71,8 @@ def delete_from_order():
             return order_process("Not all required filled")
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
+    except Exception as e:
+        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
 
 
 @app.route("/submit", methods=["POST"])
@@ -78,6 +88,8 @@ def submit_order():
         )
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
+    except Exception as e:
+        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
 
 
 @app.route("/health", methods=["GET"])
@@ -96,3 +108,6 @@ def metrics():
         prometheus_client.generate_latest(prometheus_client.PROCESS_COLLECTOR)
     )
     return Response(readings, mimetype="text/plain")
+
+
+logging.info(f"{os.getenv('FLASK_APP')} Flask app has been configured successfully")
