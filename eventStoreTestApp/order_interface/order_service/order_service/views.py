@@ -27,7 +27,9 @@ def create_order_session():
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
-        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+        logging.exception(
+            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+        )
 
 
 @app.route("/add", methods=["POST"])
@@ -49,7 +51,9 @@ def add_to_order():
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
-        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+        logging.exception(
+            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+        )
 
 
 @app.route("/delete", methods=["POST"])
@@ -72,7 +76,9 @@ def delete_from_order():
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
-        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+        logging.exception(
+            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+        )
 
 
 @app.route("/submit", methods=["POST"])
@@ -89,7 +95,9 @@ def submit_order():
     except requests.exceptions.RequestException:
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
-        logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+        logging.exception(
+            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+        )
 
 
 @app.route("/health", methods=["GET"])

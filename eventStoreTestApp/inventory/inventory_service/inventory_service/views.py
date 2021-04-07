@@ -38,7 +38,9 @@ def create_product():
                 "There was a problem connecting to the database services."
             )
         except Exception as e:
-            logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
             return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
@@ -57,7 +59,9 @@ def delete_product():
                 "There was a problem connecting to the database services."
             )
         except Exception as e:
-            logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
             return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
@@ -77,7 +81,9 @@ def add_stock():
                 "There was a problem connecting to the database services."
             )
         except Exception as e:
-            logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
             return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
@@ -97,7 +103,9 @@ def subtract_stock():
                 "There was a problem connecting to the database services."
             )
         except Exception as e:
-            logging.exception(f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception")
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
             return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
