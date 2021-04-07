@@ -25,7 +25,7 @@ class Event:
     @timeout_error_metric.count_exceptions(requests.exceptions.Timeout)
     @redirect_error_metric.count_exceptions(requests.exceptions.TooManyRedirects)
     def execute(self):
-        event_counter_metric.inc()
+        Event.event_counter_metric.inc()
         es_id = uuid.uuid4()
         headers = {
             "Content-Type": "application/json",
