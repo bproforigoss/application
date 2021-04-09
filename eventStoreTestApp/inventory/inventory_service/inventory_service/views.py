@@ -1,3 +1,7 @@
+import logging
+import os
+import sys
+
 import prometheus_client
 import requests
 from flask import render_template, request, Response
@@ -29,9 +33,15 @@ def create_product():
                 {"name": name, "price": price, "currency": currency}
             )
         except requests.exceptions.RequestException:
+            logging.exception(f"{os.getenv('FLASK_APP')} database connection exception")
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
+        except Exception as e:
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
+            return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -44,9 +54,15 @@ def delete_product():
         try:
             inventory_web_interface.delete_product(name)
         except requests.exceptions.RequestException:
+            logging.exception(f"{os.getenv('FLASK_APP')} database connection exception")
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
+        except Exception as e:
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
+            return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -60,9 +76,15 @@ def add_stock():
         try:
             inventory_web_interface.increase_item_amount(name, amount)
         except requests.exceptions.RequestException:
+            logging.exception(f"{os.getenv('FLASK_APP')} database connection exception")
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
+        except Exception as e:
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
+            return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -76,9 +98,15 @@ def subtract_stock():
         try:
             inventory_web_interface.decrease_item_amount(name, amount)
         except requests.exceptions.RequestException:
+            logging.exception(f"{os.getenv('FLASK_APP')} database connection exception")
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
+        except Exception as e:
+            logging.exception(
+                f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+            )
+            return inventory_process(e)
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -99,3 +127,6 @@ def metrics():
         prometheus_client.generate_latest(prometheus_client.PROCESS_COLLECTOR)
     )
     return Response(readings, mimetype="text/plain")
+
+
+logging.info(f"{os.getenv('FLASK_APP')} Flask app has been configured successfully")
