@@ -10,19 +10,21 @@ inventory = {}
 
 def create_product(product_details):
     stock_id = product_details["name"]
-    event = domain_events.StockEvent(
-        EVENT_TYPE.ProductCreated, stock_id, product_details
-    )
-    event.execute()
-    create_item_stock(product_details["name"], stock_id)
+    if stock_id not in inventory.keys():
+        event = domain_events.StockEvent(
+            EVENT_TYPE.ProductCreated, stock_id, product_details
+        )
+        event.execute()
+        create_item_stock(product_details["name"], stock_id)
+    else:
+        raise Exception("Item already in stock.")
 
 
 def create_item_stock(item, stock_id):
-    if item not in inventory.keys():
-        aggregate = ProductStockAggregate(item, 0)
-        aggregate.aggregate_id = stock_id
-        aggregate.create_stock("administratively created")
-        inventory[item] = aggregate
+    aggregate = ProductStockAggregate(item, 0)
+    aggregate.aggregate_id = stock_id
+    aggregate.create_stock("administratively created")
+    inventory[item] = aggregate
 
 
 def delete_product(product_name):
@@ -35,6 +37,8 @@ def delete_product(product_name):
         event.execute()
         delete_item_stock(product_name)
         inventory.pop(product_name)
+    else:
+        raise Exception("Item not in stock")
 
 
 def delete_item_stock(item):
@@ -47,8 +51,12 @@ def delete_item_stock(item):
 def increase_item_amount(item, amount):
     if item in inventory.keys():
         inventory[item].add_stock(int(amount))
+    else:
+        raise Exception("Item not in stock")
 
 
 def decrease_item_amount(item, amount):
     if item in inventory.keys():
         inventory[item].subtract_stock(int(amount))
+    else:
+        raise Exception("Item not in stock")
