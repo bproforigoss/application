@@ -30,6 +30,7 @@ def create_order_session():
         logging.exception(
             f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
         )
+        return order_process(e)
 
 
 @app.route("/add", methods=["POST"])
@@ -54,6 +55,7 @@ def add_to_order():
         logging.exception(
             f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
         )
+        return order_process(e)
 
 
 @app.route("/delete", methods=["POST"])
@@ -79,6 +81,7 @@ def delete_from_order():
         logging.exception(
             f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
         )
+        return order_process(e)
 
 
 @app.route("/submit", methods=["POST"])
@@ -98,6 +101,7 @@ def submit_order():
         logging.exception(
             f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
         )
+        return order_process(e)
 
 
 @app.route("/health", methods=["GET"])
