@@ -6,7 +6,7 @@ from flask import Flask
 
 logging.basicConfig(
     stream=sys.stdout,
-    format="app=inventory_service where=%(filename)s level=%(levelname)s msg='%(message)s'",
+    format='app=inventory_service where=%(filename)s level=%(levelname)s msg="%(message)s"',
     level=logging.INFO,
 )
 
