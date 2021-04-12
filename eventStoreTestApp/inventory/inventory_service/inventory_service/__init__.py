@@ -1,12 +1,12 @@
 import logging
 import os
+import sys
 
 from flask import Flask
 
 
 logging.basicConfig(
-    filename="app.log",
-    filemode="w",
+    stream=sys.stdout,
     format="%(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
 )
