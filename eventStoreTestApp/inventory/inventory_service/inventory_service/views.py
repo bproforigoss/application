@@ -33,27 +33,37 @@ def create_product():
                 {"name": name, "price": price, "currency": currency}
             )
         except requests.exceptions.ConnectionError as e:
-            logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.HTTPError as e:
-            logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.Timeout as e:
-            logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.TooManyRedirects as e:
-            logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.RequestException:
-            logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
@@ -61,7 +71,9 @@ def create_product():
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
-            return inventory_process("There was a problem in the operation of this software.")
+            return inventory_process(
+                "There was a problem in the operation of this software."
+            )
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -74,27 +86,37 @@ def delete_product():
         try:
             inventory_web_interface.delete_product(name)
         except requests.exceptions.ConnectionError as e:
-            logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.HTTPError as e:
-            logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.Timeout as e:
-            logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.TooManyRedirects as e:
-            logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.RequestException:
-            logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
@@ -102,7 +124,9 @@ def delete_product():
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
-            return inventory_process("There was a problem in the operation of this software.")
+            return inventory_process(
+                "There was a problem in the operation of this software."
+            )
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -116,27 +140,37 @@ def add_stock():
         try:
             inventory_web_interface.increase_item_amount(name, amount)
         except requests.exceptions.ConnectionError as e:
-            logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.HTTPError as e:
-            logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.Timeout as e:
-            logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.TooManyRedirects as e:
-            logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.RequestException:
-            logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
@@ -144,7 +178,9 @@ def add_stock():
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
-            return inventory_process("There was a problem in the operation of this software.")
+            return inventory_process(
+                "There was a problem in the operation of this software."
+            )
         return inventory_process()
     return inventory_process("Not all required given!")
 
@@ -158,27 +194,37 @@ def subtract_stock():
         try:
             inventory_web_interface.decrease_item_amount(name, amount)
         except requests.exceptions.ConnectionError as e:
-            logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.HTTPError as e:
-            logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.Timeout as e:
-            logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.TooManyRedirects as e:
-            logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
         except requests.exceptions.RequestException:
-            logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+            logging.error(
+                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
+            )
             return inventory_process(
                 "There was a problem connecting to the database services."
             )
@@ -186,7 +232,9 @@ def subtract_stock():
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
-            return inventory_process("There was a problem in the operation of this software.")
+            return inventory_process(
+                "There was a problem in the operation of this software."
+            )
         return inventory_process()
     return inventory_process("Not all required given!")
 
