@@ -24,13 +24,36 @@ def create_order_session():
     try:
         created_id = order_web_interface.create_order_session()
         return render_template("order_created.html", id=created_id)
-    except requests.exceptions.RequestException:
-        return order_process("There was a problem connecting to the database services.")
-    except Exception as e:
-        logging.exception(
-            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+    except requests.exceptions.ConnectionError:
+        logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
         )
-        return order_process(e)
+    except requests.exceptions.HTTPError:
+        logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.Timeout:
+        logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.TooManyRedirects:
+        logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.RequestException:
+        logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except Exception as e:
+        logging.error(
+            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
+        )
+        return order_process("There was a problem in the operation of this software.")
 
 
 @app.route("/add", methods=["POST"])
@@ -49,13 +72,36 @@ def add_to_order():
             )
         else:
             return order_process("Not all required filled")
-    except requests.exceptions.RequestException:
-        return order_process("There was a problem connecting to the database services.")
-    except Exception as e:
-        logging.exception(
-            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+    except requests.exceptions.ConnectionError:
+        logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
         )
-        return order_process(e)
+    except requests.exceptions.HTTPError:
+        logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.Timeout:
+        logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.TooManyRedirects:
+        logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.RequestException:
+        logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except Exception as e:
+        logging.error(
+            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
+        )
+        return order_process("There was a problem in the operation of this software.")
 
 
 @app.route("/delete", methods=["POST"])
@@ -75,13 +121,36 @@ def delete_from_order():
                 return order_process("Not in basket")
         else:
             return order_process("Not all required filled")
-    except requests.exceptions.RequestException:
-        return order_process("There was a problem connecting to the database services.")
-    except Exception as e:
-        logging.exception(
-            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+    except requests.exceptions.ConnectionError :
+        logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
         )
-        return order_process(e)
+    except requests.exceptions.HTTPError :
+        logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.Timeout :
+        logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.TooManyRedirects :
+        logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.RequestException:
+        logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except Exception as e:
+        logging.error(
+            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
+        )
+        return order_process("There was a problem in the operation of this software.")
 
 
 @app.route("/submit", methods=["POST"])
@@ -95,13 +164,36 @@ def submit_order():
         return render_template(
             "order_page.html", session_id=form["order_id"], session_submitted=True
         )
-    except requests.exceptions.RequestException:
-        return order_process("There was a problem connecting to the database services.")
-    except Exception as e:
-        logging.exception(
-            f"{os.getenv('FLASK_APP')} {sys._getframe().f_code.co_name} action exception"
+    except requests.exceptions.ConnectionError:
+        logging.error(f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
         )
-        return order_process(e)
+    except requests.exceptions.HTTPError:
+        logging.error(f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.Timeout:
+        logging.error(f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.TooManyRedirects:
+        logging.error(f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except requests.exceptions.RequestException:
+        logging.error(f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}")
+        return order_process(
+            "There was a problem connecting to the database services."
+        )
+    except Exception as e:
+        logging.error(
+            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
+        )
+        return order_process("There was a problem in the operation of this software.")
 
 
 @app.route("/health", methods=["GET"])
@@ -122,4 +214,4 @@ def metrics():
     return Response(readings, mimetype="text/plain")
 
 
-logging.info(f"{os.getenv('FLASK_APP')} Flask app has been configured successfully")
+logging.info("app has been configured successfully")

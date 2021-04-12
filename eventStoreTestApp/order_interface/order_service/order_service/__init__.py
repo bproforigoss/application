@@ -1,5 +1,4 @@
 import logging
-import os
 import sys
 
 from flask import Flask
@@ -11,7 +10,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-logging.info(f"{os.getenv('FLASK_APP')} Flask app is being initialized")
+logging.info("app is being initialized")
 app = Flask(__name__)
 
 
