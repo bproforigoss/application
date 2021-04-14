@@ -51,7 +51,9 @@ def create_order_session():
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
-        return order_process("There was a problem in the operation of this software.")
+        return order_process(
+            f"There was a problem in the operation of this software.\n{e}"
+        )
 
 
 @app.route("/add", methods=["POST"])
@@ -97,7 +99,9 @@ def add_to_order():
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
-        return order_process("There was a problem in the operation of this software.")
+        return order_process(
+            f"There was a problem in the operation of this software.\n{e}"
+        )
 
 
 @app.route("/delete", methods=["POST"])
@@ -144,7 +148,9 @@ def delete_from_order():
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
-        return order_process("There was a problem in the operation of this software.")
+        return order_process(
+            f"There was a problem in the operation of this software.\n{e}"
+        )
 
 
 @app.route("/submit", methods=["POST"])
@@ -185,7 +191,9 @@ def submit_order():
         return order_process("There was a problem connecting to the database services.")
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
-        return order_process("There was a problem in the operation of this software.")
+        return order_process(
+            f"There was a problem in the operation of this software.\n{e}"
+        )
 
 
 @app.route("/health", methods=["GET"])

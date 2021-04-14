@@ -72,7 +72,7 @@ def create_product():
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
             return inventory_process(
-                "There was a problem in the operation of this software."
+                f"There was a problem in the operation of this software.\n{e}"
             )
         return inventory_process()
     return inventory_process("Not all required given!")
@@ -125,7 +125,7 @@ def delete_product():
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
             return inventory_process(
-                "There was a problem in the operation of this software."
+                f"There was a problem in the operation of this software.\n{e}"
             )
         return inventory_process()
     return inventory_process("Not all required given!")
@@ -179,7 +179,7 @@ def add_stock():
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
             return inventory_process(
-                "There was a problem in the operation of this software."
+                f"There was a problem in the operation of this software.\n{e}"
             )
         return inventory_process()
     return inventory_process("Not all required given!")
@@ -233,7 +233,7 @@ def subtract_stock():
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
             )
             return inventory_process(
-                "There was a problem in the operation of this software."
+                f"There was a problem in the operation of this software.\n{e}"
             )
         return inventory_process()
     return inventory_process("Not all required given!")
