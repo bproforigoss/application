@@ -57,6 +57,9 @@ def increase_item_amount(item, amount):
 
 def decrease_item_amount(item, amount):
     if item in inventory.keys():
-        inventory[item].subtract_stock(int(amount))
+        if inventory[item].amount <= amount:
+            inventory[item].subtract_stock(int(amount))
+        else:
+            raise Exception("Current amount is lower than the subtracted amount")
     else:
         raise Exception("Item not in stock")
