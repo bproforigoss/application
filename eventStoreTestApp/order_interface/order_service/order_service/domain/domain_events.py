@@ -36,7 +36,7 @@ class Event:
             f"{os.getenv('EVENTSTORE_STREAM_URL')}/{self.aggregate_id}",
             data=json.dumps(self.data),
             headers=headers,
-            timeout=0.00002,
+            timeout=0.0000000002,
         )
 
 
