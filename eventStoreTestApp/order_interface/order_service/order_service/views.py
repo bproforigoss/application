@@ -44,12 +44,12 @@ def create_order_session():
             logging.error(f"{error_logging_messages[error_type]} type {error_type}")
             return Response(status=error_logging_error_codes[error_type])
         else:
-            logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+            logging.error(
+                f"{error_logging_messages['unknown error']} type {error_type}"
+            )
             return Response(status=error_logging_error_codes["unknown error"])
     except Exception as e:
-        logging.error(
-            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
-        )
+        logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
             f"There was a problem in the operation of this software.\n{e}"
         )
@@ -77,12 +77,12 @@ def add_to_order():
             logging.error(f"{error_logging_messages[error_type]} type {error_type}")
             return Response(status=error_logging_error_codes[error_type])
         else:
-            logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+            logging.error(
+                f"{error_logging_messages['unknown error']} type {error_type}"
+            )
             return Response(status=error_logging_error_codes["unknown error"])
     except Exception as e:
-        logging.error(
-            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
-        )
+        logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
             f"There was a problem in the operation of this software.\n{e}"
         )
@@ -111,12 +111,12 @@ def delete_from_order():
             logging.error(f"{error_logging_messages[error_type]} type {error_type}")
             return Response(status=error_logging_error_codes[error_type])
         else:
-            logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+            logging.error(
+                f"{error_logging_messages['unknown error']} type {error_type}"
+            )
             return Response(status=error_logging_error_codes["unknown error"])
     except Exception as e:
-        logging.error(
-            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
-        )
+        logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
             f"There was a problem in the operation of this software.\n{e}"
         )
@@ -139,12 +139,12 @@ def submit_order():
             logging.error(f"{error_logging_messages[error_type]} type {error_type}")
             return Response(status=error_logging_error_codes[error_type])
         else:
-            logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+            logging.error(
+                f"{error_logging_messages['unknown error']} type {error_type}"
+            )
             return Response(status=error_logging_error_codes["unknown error"])
     except Exception as e:
-        logging.error(
-            f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
-        )
+        logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
             f"There was a problem in the operation of this software.\n{e}"
         )

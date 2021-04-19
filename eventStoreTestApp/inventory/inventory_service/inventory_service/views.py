@@ -52,7 +52,9 @@ def create_product():
                 logging.error(f"{error_logging_messages[error_type]} type {error_type}")
                 return Response(status=error_logging_error_codes[error_type])
             else:
-                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                logging.error(
+                    f"{error_logging_messages['unknown error']} type {error_type}"
+                )
                 return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
@@ -78,7 +80,9 @@ def delete_product():
                 logging.error(f"{error_logging_messages[error_type]} type {error_type}")
                 return Response(status=error_logging_error_codes[error_type])
             else:
-                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                logging.error(
+                    f"{error_logging_messages['unknown error']} type {error_type}"
+                )
                 return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
@@ -105,7 +109,9 @@ def add_stock():
                 logging.error(f"{error_logging_messages[error_type]} type {error_type}")
                 return Response(status=error_logging_error_codes[error_type])
             else:
-                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                logging.error(
+                    f"{error_logging_messages['unknown error']} type {error_type}"
+                )
                 return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
@@ -132,7 +138,9 @@ def subtract_stock():
                 logging.error(f"{error_logging_messages[error_type]} type {error_type}")
                 return Response(status=error_logging_error_codes[error_type])
             else:
-                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                logging.error(
+                    f"{error_logging_messages['unknown error']} type {error_type}"
+                )
                 return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
