@@ -9,6 +9,20 @@ from flask import render_template, request, Response
 from inventory_service import inventory_web_interface, app
 from . import prom_logs
 
+error_logging_messages = {
+    "ConnectionError": f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "Timeout": f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "TooManyRedirects": f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "unknown error": f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+}
+error_logging_error_codes = {
+    "ConnectionError": 502,
+    "HTTPError": 502,
+    "Timeout": 504,
+    "TooManyRedirects": 500,
+    "unknown error": 500,
+}
 http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
@@ -32,41 +46,14 @@ def create_product():
             inventory_web_interface.create_product(
                 {"name": name, "price": price, "currency": currency}
             )
-        except requests.exceptions.ConnectionError as e:
-            logging.error(
-                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.HTTPError as e:
-            logging.error(
-                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.Timeout as e:
-            logging.error(
-                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.TooManyRedirects as e:
-            logging.error(
-                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.RequestException:
-            logging.error(
-                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
+        except requests.exceptions.RequestException as e:
+            error_type = type(e).__name__
+            if error_type in error_logging_messages.keys():
+                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
+                return Response(status=error_logging_error_codes[error_type])
+            else:
+                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
@@ -85,41 +72,14 @@ def delete_product():
     if name != "":
         try:
             inventory_web_interface.delete_product(name)
-        except requests.exceptions.ConnectionError as e:
-            logging.error(
-                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.HTTPError as e:
-            logging.error(
-                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.Timeout as e:
-            logging.error(
-                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.TooManyRedirects as e:
-            logging.error(
-                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.RequestException:
-            logging.error(
-                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
+        except requests.exceptions.RequestException as e:
+            error_type = type(e).__name__
+            if error_type in error_logging_messages.keys():
+                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
+                return Response(status=error_logging_error_codes[error_type])
+            else:
+                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
@@ -139,41 +99,14 @@ def add_stock():
     if name != "" and amount != "":
         try:
             inventory_web_interface.increase_item_amount(name, amount)
-        except requests.exceptions.ConnectionError as e:
-            logging.error(
-                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.HTTPError as e:
-            logging.error(
-                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.Timeout as e:
-            logging.error(
-                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.TooManyRedirects as e:
-            logging.error(
-                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.RequestException:
-            logging.error(
-                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
+        except requests.exceptions.RequestException as e:
+            error_type = type(e).__name__
+            if error_type in error_logging_messages.keys():
+                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
+                return Response(status=error_logging_error_codes[error_type])
+            else:
+                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
@@ -193,41 +126,14 @@ def subtract_stock():
     if name != "" and amount != "":
         try:
             inventory_web_interface.decrease_item_amount(name, amount)
-        except requests.exceptions.ConnectionError as e:
-            logging.error(
-                f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.HTTPError as e:
-            logging.error(
-                f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.Timeout as e:
-            logging.error(
-                f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.TooManyRedirects as e:
-            logging.error(
-                f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
-        except requests.exceptions.RequestException:
-            logging.error(
-                f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}"
-            )
-            return inventory_process(
-                "There was a problem connecting to the database services."
-            )
+        except requests.exceptions.RequestException as e:
+            error_type = type(e).__name__
+            if error_type in error_logging_messages.keys():
+                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
+                return Response(status=error_logging_error_codes[error_type])
+            else:
+                logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+                return Response(status=error_logging_error_codes["unknown error"])
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
