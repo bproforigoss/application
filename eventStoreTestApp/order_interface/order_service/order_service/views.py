@@ -9,12 +9,12 @@ from flask import render_template, request, Response
 from order_service import order_web_interface, app
 from . import prom_logs
 
-expected_main_error_types = [
+expected_main_error_types = (
     requests.exceptions.ConnectionError,
     requests.exceptions.HTTPError,
     requests.exceptions.Timeout,
     requests.exceptions.TooManyRedirects,
-]
+)
 error_logging_messages = {
     "ConnectionError": f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
@@ -33,9 +33,9 @@ http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
 def log_and_return_connection_error_response(e):
-    error_type = e
+    error_type = type(e)
     for expected_error_type in expected_main_error_types:
-        if issubclass(e, expected_error_type):
+        if issubclass(error_type, expected_error_type):
             logging.error(
                 f"{error_logging_messages[expected_error_type.__name__]} type {error_type}"
             )
