@@ -33,9 +33,9 @@ http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
 def log_and_return_connection_error_response(e):
-    error_type = e
+    error_type = type(e)
     for expected_error_type in expected_main_error_types:
-        if issubclass(e, expected_error_type):
+        if issubclass(error_type, expected_error_type):
             logging.error(
                 f"{error_logging_messages[expected_error_type.__name__]} type {error_type}"
             )
