@@ -18,6 +18,9 @@ spec:
       - name: eventstoredb
         image: eventstore/eventstore
         args: ["--insecure", "--enable-atom-pub-over-http", "--enable-external-tcp"]
+        resources:
+          limits:
+            cpu: "200m"
         livenessProbe:
           httpGet:
             port: 2113
