@@ -36,11 +36,13 @@ def log_and_return_connection_error_response(e):
     error_type = type(e).__name__
     for expected_error_type in expected_main_error_types:
         if issubclass(e, expected_error_type):
-            logging.error(f"{error_logging_messages[type(expected_error_type).__name__]} type {error_type}")
-            return Response(status=error_logging_error_codes[type(expected_error_type).__name__])
-    logging.error(
-        f"{error_logging_messages['unknown error']} type {error_type}"
-    )
+            logging.error(
+                f"{error_logging_messages[type(expected_error_type).__name__]} type {error_type}"
+            )
+            return Response(
+                status=error_logging_error_codes[type(expected_error_type).__name__]
+            )
+    logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
     return Response(status=error_logging_error_codes["unknown error"])
 
 
