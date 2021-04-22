@@ -9,12 +9,12 @@ from flask import render_template, request, Response
 from order_service import order_web_interface, app
 from . import prom_logs
 
-expected_main_error_types = (
+expected_main_error_types = [
     requests.exceptions.ConnectionError,
     requests.exceptions.HTTPError,
     requests.exceptions.Timeout,
     requests.exceptions.TooManyRedirects,
-)
+]
 error_logging_messages = {
     "ConnectionError": f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
