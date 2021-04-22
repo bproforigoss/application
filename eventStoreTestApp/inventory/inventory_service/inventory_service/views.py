@@ -9,6 +9,12 @@ from flask import render_template, request, Response
 from inventory_service import inventory_web_interface, app
 from . import prom_logs
 
+expected_main_error_types = [
+    requests.exceptions.ConnectionError,
+    requests.exceptions.HTTPError,
+    requests.exceptions.Timeout,
+    requests.exceptions.TooManyRedirects,
+]
 error_logging_messages = {
     "ConnectionError": f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
@@ -24,6 +30,20 @@ error_logging_error_codes = {
     "unknown error": 500,
 }
 http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
+
+
+def log_and_return_connection_error_response(e):
+    error_type = type(e).__name__
+    for expected_error_type in expected_main_error_types:
+        if issubclass(e, expected_error_type):
+            logging.error(
+                f"{error_logging_messages[type(expected_error_type).__name__]} type {error_type}"
+            )
+            return Response(
+                status=error_logging_error_codes[type(expected_error_type).__name__]
+            )
+    logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+    return Response(status=error_logging_error_codes["unknown error"])
 
 
 @app.route("/", methods=["GET"])
@@ -47,15 +67,7 @@ def create_product():
                 {"name": name, "price": price, "currency": currency}
             )
         except requests.exceptions.RequestException as e:
-            error_type = type(e).__name__
-            if error_type in error_logging_messages.keys():
-                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-                return Response(status=error_logging_error_codes[error_type])
-            else:
-                logging.error(
-                    f"{error_logging_messages['unknown error']} type {error_type}"
-                )
-                return Response(status=error_logging_error_codes["unknown error"])
+            log_and_return_connection_error_response(e)
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
@@ -75,15 +87,7 @@ def delete_product():
         try:
             inventory_web_interface.delete_product(name)
         except requests.exceptions.RequestException as e:
-            error_type = type(e).__name__
-            if error_type in error_logging_messages.keys():
-                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-                return Response(status=error_logging_error_codes[error_type])
-            else:
-                logging.error(
-                    f"{error_logging_messages['unknown error']} type {error_type}"
-                )
-                return Response(status=error_logging_error_codes["unknown error"])
+            log_and_return_connection_error_response(e)
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
@@ -104,15 +108,7 @@ def add_stock():
         try:
             inventory_web_interface.increase_item_amount(name, amount)
         except requests.exceptions.RequestException as e:
-            error_type = type(e).__name__
-            if error_type in error_logging_messages.keys():
-                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-                return Response(status=error_logging_error_codes[error_type])
-            else:
-                logging.error(
-                    f"{error_logging_messages['unknown error']} type {error_type}"
-                )
-                return Response(status=error_logging_error_codes["unknown error"])
+            log_and_return_connection_error_response(e)
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
@@ -133,15 +129,7 @@ def subtract_stock():
         try:
             inventory_web_interface.decrease_item_amount(name, amount)
         except requests.exceptions.RequestException as e:
-            error_type = type(e).__name__
-            if error_type in error_logging_messages.keys():
-                logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-                return Response(status=error_logging_error_codes[error_type])
-            else:
-                logging.error(
-                    f"{error_logging_messages['unknown error']} type {error_type}"
-                )
-                return Response(status=error_logging_error_codes["unknown error"])
+            log_and_return_connection_error_response(e)
         except Exception as e:
             logging.error(
                 f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}"
