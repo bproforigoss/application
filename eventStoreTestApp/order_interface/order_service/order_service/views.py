@@ -9,6 +9,12 @@ from flask import render_template, request, Response
 from order_service import order_web_interface, app
 from . import prom_logs
 
+expected_main_error_types = [
+    requests.exceptions.ConnectionError,
+    requests.exceptions.HTTPError,
+    requests.exceptions.Timeout,
+    requests.exceptions.TooManyRedirects,
+]
 error_logging_messages = {
     "ConnectionError": f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
@@ -26,6 +32,18 @@ error_logging_error_codes = {
 http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
+def log_and_return_connection_error_response(e):
+    error_type = type(e).__name__
+    for expected_error_type in expected_main_error_types:
+        if issubclass(e, expected_error_type):
+            logging.error(f"{error_logging_messages[type(expected_error_type).__name__]} type {error_type}")
+            return Response(status=error_logging_error_codes[type(expected_error_type).__name__])
+    logging.error(
+        f"{error_logging_messages['unknown error']} type {error_type}"
+    )
+    return Response(status=error_logging_error_codes["unknown error"])
+
+
 @app.route("/", methods=["GET"])
 def order_process(error=None):
     http_counter_metric.labels(method="GET", endpoint="/").inc()
@@ -39,15 +57,7 @@ def create_order_session():
         created_id = order_web_interface.create_order_session()
         return render_template("order_created.html", id=created_id)
     except requests.exceptions.RequestException as e:
-        error_type = type(e).__name__
-        if error_type in error_logging_messages.keys():
-            logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-            return Response(status=error_logging_error_codes[error_type])
-        else:
-            logging.error(
-                f"{error_logging_messages['unknown error']} type {error_type}"
-            )
-            return Response(status=error_logging_error_codes["unknown error"])
+        return log_and_return_connection_error_response(e)
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
@@ -72,15 +82,7 @@ def add_to_order():
         else:
             return order_process("Not all required filled")
     except requests.exceptions.RequestException as e:
-        error_type = type(e).__name__
-        if error_type in error_logging_messages.keys():
-            logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-            return Response(status=error_logging_error_codes[error_type])
-        else:
-            logging.error(
-                f"{error_logging_messages['unknown error']} type {error_type}"
-            )
-            return Response(status=error_logging_error_codes["unknown error"])
+        return log_and_return_connection_error_response(e)
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
@@ -106,15 +108,7 @@ def delete_from_order():
         else:
             return order_process("Not all required filled")
     except requests.exceptions.RequestException as e:
-        error_type = type(e).__name__
-        if error_type in error_logging_messages.keys():
-            logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-            return Response(status=error_logging_error_codes[error_type])
-        else:
-            logging.error(
-                f"{error_logging_messages['unknown error']} type {error_type}"
-            )
-            return Response(status=error_logging_error_codes["unknown error"])
+        return log_and_return_connection_error_response(e)
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
@@ -134,15 +128,7 @@ def submit_order():
             "order_page.html", session_id=form["order_id"], session_submitted=True
         )
     except requests.exceptions.RequestException as e:
-        error_type = type(e).__name__
-        if error_type in error_logging_messages.keys():
-            logging.error(f"{error_logging_messages[error_type]} type {error_type}")
-            return Response(status=error_logging_error_codes[error_type])
-        else:
-            logging.error(
-                f"{error_logging_messages['unknown error']} type {error_type}"
-            )
-            return Response(status=error_logging_error_codes["unknown error"])
+        return log_and_return_connection_error_response(e)
     except Exception as e:
         logging.error(f"{type(e).__name__} caught in {sys._getframe().f_code.co_name}")
         return order_process(
