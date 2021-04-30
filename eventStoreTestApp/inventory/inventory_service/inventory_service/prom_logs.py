@@ -1,4 +1,4 @@
-from prometheus_client import Counter, Summary
+from prometheus_client import Counter
 
 performance_metrics = {
     "http_request_counter": Counter(
@@ -9,7 +9,7 @@ performance_metrics = {
     "event_send_counter": Counter(
         "inventory_event_send_counter", "Counter of egress events"
     ),
-    "network_error_counter": Counter(
+    "network_timeout_error_counter": Counter(
         "inventory_network_error_counter",
         "Errors caused by network problems, e.g. DNS failure, refused connection",
     ),
@@ -17,12 +17,16 @@ performance_metrics = {
         "inventory_http_error_counter",
         "Errors caused by HTTP unsuccessful status code response",
     ),
-    "timeout_error_counter": Counter(
+    "connection_timeout_error_counter": Counter(
         "inventory_timeout_error_counter", "Errors caused by request timeouts"
     ),
     "redirect_error_counter": Counter(
         "inventory_redirect_error_counter",
         "Errors caused by exceeding redirection limits",
+    ),
+    "ambiguous_network_error_counter": Counter(
+        "inventory_ambiguous_network_error_counter",
+        "Errors caused by exceptions not specifically measured",
     ),
 }
 
@@ -32,4 +36,4 @@ performance_metrics["http_request_counter"].labels("GET", "/metrics")
 performance_metrics["http_request_counter"].labels("POST", "/create")
 performance_metrics["http_request_counter"].labels("POST", "/delete")
 performance_metrics["http_request_counter"].labels("POST", "/add")
-performance_metrics["http_request_counter"].labels("POST", "/subtract")
+performance_metrics["http_request_counter"].labels("POST", "/submit")

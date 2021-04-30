@@ -10,39 +10,51 @@ from order_service import order_web_interface, app
 from . import prom_logs
 
 expected_main_error_types = [
-    requests.exceptions.ConnectionError,
+    requests.exceptions.ConnectTimeout,
     requests.exceptions.HTTPError,
-    requests.exceptions.Timeout,
+    requests.exceptions.ReadTimeout,
     requests.exceptions.TooManyRedirects,
 ]
 error_logging_messages = {
-    "ConnectionError": f"network operation error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "ConnectTimeout": f"network timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
-    "Timeout": f"timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "ReadTimeout": f"communication timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "TooManyRedirects": f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "unknown error": f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
 }
 error_logging_error_codes = {
-    "ConnectionError": 502,
+    "ConnectTimeout": 502,
     "HTTPError": 502,
-    "Timeout": 504,
+    "ReadTimeout": 504,
     "TooManyRedirects": 500,
     "unknown error": 500,
 }
+error_logging_metrics = {
+    "ConnectTimeout": prom_logs.performance_metrics["network_timeout_error_counter"],
+    "HTTPError": prom_logs.performance_metrics["http_error_counter"],
+    "ReadTimeout": prom_logs.performance_metrics["connection_timeout_error_counter"],
+    "TooManyRedirects": prom_logs.performance_metrics["redirect_error_counter"],
+    "unknown error": prom_logs.performance_metrics["ambiguous_network_error_counter"],
+}
+
 http_counter_metric = prom_logs.performance_metrics["http_request_counter"]
 
 
 def log_and_return_connection_error_response(e):
     error_type = type(e)
     for expected_error_type in expected_main_error_types:
-        if issubclass(error_type, expected_error_type):
+        if error_type is expected_error_type:
+            error_logging_metrics[expected_error_type.__name__].inc()
             logging.error(
-                f"{error_logging_messages[expected_error_type.__name__]} type {error_type}"
+                f"{error_logging_messages[expected_error_type.__name__]} type {error_type.__name__}"
             )
             return Response(
                 status=error_logging_error_codes[expected_error_type.__name__]
             )
-    logging.error(f"{error_logging_messages['unknown error']} type {error_type}")
+    error_logging_metrics["unknown error"].inc()
+    logging.error(
+        f"{error_logging_messages['unknown error']} type {error_type.__name__}"
+    )
     return Response(status=error_logging_error_codes["unknown error"])
 
 
