@@ -7,9 +7,9 @@ images:
 - name: eventstore/eventstore
   newTag: 20.6.1-buster-slim
 - name: ghcr.io/bproforigoss/inventorymicroservice
-  newTag: 8892e0e4e26b13df5b934a3a953f3dcfddf2297e
+  newTag: 4b18f099d0696a7244700680eafcaba8e7082655
 - name: ghcr.io/bproforigoss/ordermicroservice
-  newTag: 8892e0e4e26b13df5b934a3a953f3dcfddf2297e
+  newTag: 4b18f099d0696a7244700680eafcaba8e7082655
 
 resources:
 - k8sconfigs
