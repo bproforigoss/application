@@ -10,15 +10,16 @@ performance_metrics = {
         "inventory_event_send_counter", "Counter of egress events"
     ),
     "network_timeout_error_counter": Counter(
-        "inventory_network_error_counter",
-        "Errors caused by network problems, e.g. DNS failure, refused connection",
+        "inventory_network_timeout_error_counter",
+        "Errors caused by timeouts while establishing connection",
     ),
     "http_error_counter": Counter(
         "inventory_http_error_counter",
         "Errors caused by HTTP unsuccessful status code response",
     ),
     "connection_timeout_error_counter": Counter(
-        "inventory_timeout_error_counter", "Errors caused by request timeouts"
+        "inventory_connection_timeout_error_counter",
+        "Errors caused by timeouts during data transmission",
     ),
     "redirect_error_counter": Counter(
         "inventory_redirect_error_counter",

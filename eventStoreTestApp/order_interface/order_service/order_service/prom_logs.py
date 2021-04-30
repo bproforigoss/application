@@ -2,30 +2,31 @@ from prometheus_client import Counter
 
 performance_metrics = {
     "http_request_counter": Counter(
-        "orderinterface_http_request_counter",
+        "order_http_request_counter",
         "Counter of HTTP requests being served",
         ["method", "endpoint"],
     ),
     "event_send_counter": Counter(
-        "orderinterface_event_send_counter", "Counter of egress events"
+        "order_event_send_counter", "Counter of egress events"
     ),
     "network_timeout_error_counter": Counter(
-        "orderinterface_network_error_counter",
-        "Errors caused by network problems, e.g. DNS failure, refused connection",
+        "order_network_timeout_error_counter",
+        "Errors caused by timeouts while establishing connection",
     ),
     "http_error_counter": Counter(
-        "orderinterface_http_error_counter",
+        "order_http_error_counter",
         "Errors caused by HTTP unsuccessful status code response",
     ),
     "connection_timeout_error_counter": Counter(
-        "orderinterface_timeout_error_counter", "Errors caused by request timeouts"
+        "order_connection_timeout_error_counter",
+        "Errors caused by timeouts during data transmission",
     ),
     "redirect_error_counter": Counter(
-        "orderinterface_redirect_error_counter",
+        "order_redirect_error_counter",
         "Errors caused by exceeding redirection limits",
     ),
     "ambiguous_network_error_counter": Counter(
-        "orderinterface_ambiguous_network_error_counter",
+        "order_ambiguous_network_error_counter",
         "Errors caused by exceptions not specifically measured",
     ),
 }
