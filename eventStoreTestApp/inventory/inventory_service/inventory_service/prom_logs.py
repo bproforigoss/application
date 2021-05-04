@@ -27,7 +27,7 @@ performance_metrics = {
     ),
     "connection_error_counter": Counter(
         "inventory_connection_error_counter",
-        "Errors caused by general network connection failure"
+        "Errors caused by general network connection failure",
     ),
     "ambiguous_network_error_counter": Counter(
         "inventory_ambiguous_network_error_counter",
