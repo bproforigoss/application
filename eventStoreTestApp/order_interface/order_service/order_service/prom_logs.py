@@ -25,6 +25,10 @@ performance_metrics = {
         "order_redirect_error_counter",
         "Errors caused by exceeding redirection limits",
     ),
+    "connection_error_counter": Counter(
+        "order_connection_error_counter",
+        "Errors caused by general network connection failure"
+    ),
     "ambiguous_network_error_counter": Counter(
         "order_ambiguous_network_error_counter",
         "Errors caused by exceptions not specifically measured",
