@@ -14,12 +14,14 @@ expected_main_error_types = [
     requests.exceptions.HTTPError,
     requests.exceptions.ReadTimeout,
     requests.exceptions.TooManyRedirects,
+    requests.exceptions.ConnectionError,
 ]
 error_logging_messages = {
     "ConnectTimeout": f"network timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "HTTPError": f"invalid HTTP response error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "ReadTimeout": f"communication timeout error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "TooManyRedirects": f"redirection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
+    "ConnectionError": f"connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
     "unknown error": f"ambiguous connection error while connecting to {os.getenv('EVENTSTORE_STREAM_URL')}",
 }
 error_logging_error_codes = {
@@ -27,6 +29,7 @@ error_logging_error_codes = {
     "HTTPError": 502,
     "ReadTimeout": 504,
     "TooManyRedirects": 500,
+    "ConnectionError": 500,
     "unknown error": 500,
 }
 error_logging_metrics = {
@@ -34,6 +37,7 @@ error_logging_metrics = {
     "HTTPError": prom_logs.performance_metrics["http_error_counter"],
     "ReadTimeout": prom_logs.performance_metrics["connection_timeout_error_counter"],
     "TooManyRedirects": prom_logs.performance_metrics["redirect_error_counter"],
+    "ConnectionError": prom_logs.performance_metrics["connection_error_counter"],
     "unknown error": prom_logs.performance_metrics["ambiguous_network_error_counter"],
 }
 
