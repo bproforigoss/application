@@ -5,7 +5,7 @@ metadata:
   labels:
     app: eventstoredb
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: eventstoredb
@@ -20,7 +20,7 @@ spec:
         args: ["--insecure", "--enable-atom-pub-over-http", "--enable-external-tcp"]
         resources:
           limits:
-            cpu: "70m"
+            cpu: "200m"
         livenessProbe:
           httpGet:
             port: 2113
